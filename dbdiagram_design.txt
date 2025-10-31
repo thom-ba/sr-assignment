@@ -32,7 +32,7 @@ table "team_competition_membership" {
 table "venue" {
   id integer [primary key, not null]
   name text [not null]
-  city text
+  city text [not null]
   capacity int
 }
 

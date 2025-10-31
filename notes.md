@@ -26,3 +26,13 @@ Backend:
     - CRUD application: Gin (lightweight and simple to learn)
     - Database integration: GORM (easy database handling)
 Also both of these technologies should scale well so implementing search, pagination or filters later on shouldnt be a problem
+
+
+Design Patterns I used:
+    - Dependency injection
+    - Singleton
+
+
+# Resources:
+https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
+https://gorm.io/docs/
