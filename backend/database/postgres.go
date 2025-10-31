@@ -1,4 +1,4 @@
-package databse
+package database
 
 import (
 	"fmt"
@@ -20,7 +20,7 @@ var (
 func GetDB() *gorm.DB {
 	once.Do(func() {
 		connectionString := fmt.Sprintf(
-			"host=%s port=%s user=%s password=%s dbname=%s",
+			"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 			"127.0.0.1",
 			"3295",
 			os.Getenv("DB_USER"),

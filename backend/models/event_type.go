@@ -1,6 +1,6 @@
 package models
 
-type EventTable struct {
+type EventType struct {
 	ID   uint   `gorm:"primaryKey;autoIncrement"`
 	Name string `gorm:"not null;unique"`
 }

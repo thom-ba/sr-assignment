@@ -1,6 +1,8 @@
 package models
 
 type TeamcompetitionMembership struct {
-	CompetitionId uint `gorm:"not null;index:idx_competition_team"`
-	TeamId        uint `gorm:"not null;index:idx_competition_team"`
+	CompetitionID uint `gorm:"not null;index:idx_competition_team"`
+	Competition   Competition
+	TeamID        uint `gorm:"not null;index:idx_competition_team"`
+	Team          Team
 }
