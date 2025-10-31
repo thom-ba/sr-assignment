@@ -1,0 +1,69 @@
+table "category" {
+  id integer [primary key, not null]
+  name text [unique, not null] // Men, Women, U18
+}
+
+table "event_type" {
+  id integer [primary key, not null]
+  name text [unique, not null] // WM, EM, Freundschaftsspiel
+}
+
+table "sport" {
+  id integer [primary key, not null]
+  name text [unique, not null] // Football, Basketball
+}
+
+table "team" {
+  id integer [primary key, not null]
+  name text [unique, not null]
+  country_code char(3) // AUT, DE
+  league text
+}
+
+table "team_competition_membership" {
+  competition_id int [not null, ref: - competition.id]
+  team_id int [not null, ref: - team.id]
+
+  indexes {
+    (competition_id, team_id) [pk]
+  }
+}
+
+table "venue" {
+  id integer [primary key, not null]
+  name text [not null]
+  city text
+  capacity int
+}
+
+table "competition" {
+  id integer [pk]
+  sport_id integer [not null, ref: > sport.id]
+  category_id integer [ref: > category.id]
+  name text [not null]
+  year int
+
+  indexes {
+    (sport_id, name, year) [unique]
+  }
+}
+
+table "event" {
+  id int [pk]
+  competition_id int [not null, ref: - competition.id]
+  event_type_id int [not null, ref: - event_type.id]
+
+  home_team_id int [not null, ref: - team.id]
+  away_team_id int [not null, ref: - team.id]
+
+  venue_id int [not null, ref: > venue.id]
+
+  event_datetime timesetamp [not null] // with timezone
+
+  name text
+  description text
+
+  indexes {
+    (venue_id, event_datetime) [unique]
+  }
+}
