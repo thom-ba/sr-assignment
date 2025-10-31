@@ -1,8 +1,8 @@
 package models
 
 type Venue struct {
-	ID       uint `gorm:"primaryKey; autoIncrement"`
-	Name     string
-	City     string
-	Capacity *uint // Optional
+	ID       uint   `gorm:"primaryKey; autoIncrement"`
+	Name     string `gorm:"not null"`
+	City     string `gorm:"not null"`
+	Capacity *uint  // Optional
 }
