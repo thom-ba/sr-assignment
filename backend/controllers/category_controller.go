@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"backend/requests"
+	"backend/responses"
 	"backend/services"
 	"fmt"
 	"net/http"
@@ -43,11 +44,15 @@ func (controller *CategoryController) CreateCategory(ctx *gin.Context) {
 	req := requests.CreateCategoryRequest{}
 	ctx.ShouldBindJSON(&req)
 
-	err := controller.categoryService.Insert(req)
+	category, err := controller.categoryService.Insert(req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, nil)
+	resp := responses.CategoryResponse{
+		ID:   category.ID,
+		Name: category.Name,
+	}
+	ctx.JSON(http.StatusOK, resp)
 }

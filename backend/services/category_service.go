@@ -9,7 +9,7 @@ import (
 
 type CategoryService interface {
 	GetCategoryById(categoryId uint) (*models.Category, error)
-	Insert(category requests.CreateCategoryRequest) error
+	Insert(category requests.CreateCategoryRequest) (*models.Category, error)
 }
 
 type CategoryServiceImpl struct {
@@ -31,16 +31,16 @@ func (c *CategoryServiceImpl) GetCategoryById(categoryId uint) (*models.Category
 	return category, nil
 }
 
-func (c *CategoryServiceImpl) Insert(category requests.CreateCategoryRequest) error {
-	m := models.Category{
+func (c *CategoryServiceImpl) Insert(category requests.CreateCategoryRequest) (*models.Category, error) {
+	m := &models.Category{
 		Name: category.Name,
 	}
 
 	err := c.categoryRepo.Insert(m)
 	if err != nil {
 		fmt.Print("Error inserting category\n", err)
-		return err
+		return nil, err
 	}
 
-	return nil
+	return m, nil
 }
