@@ -16,6 +16,7 @@ A icehockey team could be linked to a football game
 
 AI Usage:
 - Checked my Schema Design for any obvious errors. Didnt find any but forgot about 3nf in one table
+- Used AI to get resources to learn from
 
 Why I use what tech:
 Frontend:
@@ -36,3 +37,4 @@ Design Patterns I used:
 # Resources:
 https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
 https://gorm.io/docs/
+https://blog.stackademic.com/golang-crud-rest-api-with-gin-and-gorm-service-repository-pattern-167afa8e9e87

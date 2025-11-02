@@ -1,9 +1,14 @@
 package main
 
 import (
+	"backend/controllers"
 	database "backend/database"
 	"backend/models"
+	"backend/repositories"
+	"backend/services"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -31,4 +36,21 @@ func main() {
 		log.Fatal("Migration failed:", err)
 	}
 	log.Println("Database migrated successfully!")
+
+	eventRepo := repositories.NewEventRepo(database.GetDB())
+	eventService := services.NewEventService(eventRepo)
+
+	categoryRepo := repositories.NewCategoryRepo(database.GetDB())
+	categoryService := services.NewCategoryService(categoryRepo)
+	categoryController := controllers.NewCategoryController(categoryService)
+
+	r := gin.Default()
+	r.GET("/events/:eventID", controllers.GetEventController(eventService))
+
+	categoryRoutes := r.Group("/categories")
+	{
+		categoryRoutes.GET("/categories/:categoryID", categoryController.GetCategoryById)
+		categoryRoutes.POST("/", categoryController.CreateCategory)
+	}
+	r.Run()
 }
