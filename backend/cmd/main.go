@@ -50,6 +50,7 @@ func main() {
 		categoryRoutes.GET("/:categoryID", categoryController.GetCategoryById)
 		categoryRoutes.POST("/create", categoryController.CreateCategory)
 		categoryRoutes.PATCH("/update", categoryController.UpdateCategory) // We use PATCH as we dont update the WHOLE resource
+		categoryRoutes.DELETE("/delete/:categoryID", categoryController.DeleteCategory)
 	}
 	r.Run()
 }

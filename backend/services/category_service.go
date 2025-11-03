@@ -11,6 +11,7 @@ type CategoryService interface {
 	GetCategoryById(id uint) (*models.Category, error)
 	Insert(categoryRequest requests.CreateCategoryRequest) (*models.Category, error)
 	Update(newCategory requests.UpdateCategoryRequest) (*models.Category, error)
+	Delete(id uint) error
 }
 
 type CategoryServiceImpl struct {
@@ -58,4 +59,12 @@ func (c *CategoryServiceImpl) Update(newCategory requests.UpdateCategoryRequest)
 	}
 
 	return category, nil
+}
+
+func (c *CategoryServiceImpl) Delete(id uint) error {
+	if err := c.categoryRepo.Delete(id); err != nil {
+		return err
+	}
+
+	return nil
 }

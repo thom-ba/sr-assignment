@@ -73,3 +73,18 @@ func (controller *CategoryController) UpdateCategory(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, resp)
 }
+
+func (controller *CategoryController) DeleteCategory(ctx *gin.Context) {
+	idParam := ctx.Param("categoryID")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		return
+	}
+
+	if err := controller.categoryService.Delete(uint(id)); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Category deleted"})
+}
