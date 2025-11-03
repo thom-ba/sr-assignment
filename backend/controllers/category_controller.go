@@ -56,3 +56,20 @@ func (controller *CategoryController) CreateCategory(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, resp)
 }
+
+func (controller *CategoryController) UpdateCategory(ctx *gin.Context) {
+	req := requests.UpdateCategoryRequest{}
+	ctx.ShouldBindJSON(&req)
+
+	category, err := controller.categoryService.Update(req)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	resp := responses.CategoryResponse{
+		ID:   category.ID,
+		Name: category.Name,
+	}
+	ctx.JSON(http.StatusOK, resp)
+}

@@ -8,8 +8,9 @@ import (
 )
 
 type CategoryService interface {
-	GetCategoryById(categoryId uint) (*models.Category, error)
-	Insert(category requests.CreateCategoryRequest) (*models.Category, error)
+	GetCategoryById(id uint) (*models.Category, error)
+	Insert(categoryRequest requests.CreateCategoryRequest) (*models.Category, error)
+	Update(newCategory requests.UpdateCategoryRequest) (*models.Category, error)
 }
 
 type CategoryServiceImpl struct {
@@ -22,8 +23,8 @@ func NewCategoryService(repo repositories.CategoryRepo) CategoryService {
 	}
 }
 
-func (c *CategoryServiceImpl) GetCategoryById(categoryId uint) (*models.Category, error) {
-	category, err := c.categoryRepo.GetById(categoryId)
+func (c *CategoryServiceImpl) GetCategoryById(id uint) (*models.Category, error) {
+	category, err := c.categoryRepo.GetById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -31,16 +32,30 @@ func (c *CategoryServiceImpl) GetCategoryById(categoryId uint) (*models.Category
 	return category, nil
 }
 
-func (c *CategoryServiceImpl) Insert(category requests.CreateCategoryRequest) (*models.Category, error) {
-	m := &models.Category{
-		Name: category.Name,
+func (c *CategoryServiceImpl) Insert(categoryRequest requests.CreateCategoryRequest) (*models.Category, error) {
+	category := &models.Category{
+		Name: categoryRequest.Name,
 	}
 
-	err := c.categoryRepo.Insert(m)
+	err := c.categoryRepo.Insert(category)
 	if err != nil {
 		fmt.Print("Error inserting category\n", err)
 		return nil, err
 	}
 
-	return m, nil
+	return category, nil
+}
+
+func (c *CategoryServiceImpl) Update(newCategory requests.UpdateCategoryRequest) (*models.Category, error) {
+	category, err := c.categoryRepo.GetById(newCategory.ID)
+	if err != nil {
+		return nil, err
+	}
+	category.Name = newCategory.Name
+
+	if err := c.categoryRepo.Update(category); err != nil {
+		return nil, err
+	}
+
+	return category, nil
 }
