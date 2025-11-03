@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//TOD: Change to the same as in the other ones, as this looks horrible, even tho it works perfectly fine
+
 func GetEventController(service services.EventService) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("eventID")

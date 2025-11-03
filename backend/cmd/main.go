@@ -42,6 +42,10 @@ func main() {
 	categoryService := services.NewCategoryService(categoryRepo)
 	categoryController := controllers.NewCategoryController(categoryService)
 
+	sportRepo := repositories.NewSportRepo(database.GetDB())
+	sportService := services.NewSportService(sportRepo)
+	sportController := controllers.NewSportController(sportService)
+
 	r := gin.Default()
 	r.GET("/events/:eventID", controllers.GetEventController(eventService))
 
@@ -52,5 +56,14 @@ func main() {
 		categoryRoutes.PATCH("/update", categoryController.UpdateCategory) // We use PATCH as we dont update the WHOLE resource
 		categoryRoutes.DELETE("/delete/:categoryID", categoryController.DeleteCategory)
 	}
+
+	sportRoutes := r.Group("/sports")
+	{
+		sportRoutes.GET("/:sportID", sportController.GetSportById)
+		sportRoutes.POST("/create", sportController.CreateSport)
+		sportRoutes.PATCH("/update", sportController.UpdateSport)
+		sportRoutes.DELETE("/delete/:sportID", sportController.DeleteSport)
+	}
+
 	r.Run()
 }

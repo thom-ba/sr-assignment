@@ -33,9 +33,9 @@ func (c *CategoryServiceImpl) GetCategoryById(id uint) (*models.Category, error)
 	return category, nil
 }
 
-func (c *CategoryServiceImpl) Insert(categoryRequest requests.CreateCategoryRequest) (*models.Category, error) {
+func (c *CategoryServiceImpl) Insert(createCategoryRequest requests.CreateCategoryRequest) (*models.Category, error) {
 	category := &models.Category{
-		Name: categoryRequest.Name,
+		Name: createCategoryRequest.Name,
 	}
 
 	err := c.categoryRepo.Insert(category)
@@ -47,12 +47,12 @@ func (c *CategoryServiceImpl) Insert(categoryRequest requests.CreateCategoryRequ
 	return category, nil
 }
 
-func (c *CategoryServiceImpl) Update(newCategory requests.UpdateCategoryRequest) (*models.Category, error) {
-	category, err := c.categoryRepo.GetById(newCategory.ID)
+func (c *CategoryServiceImpl) Update(newCategoryRequest requests.UpdateCategoryRequest) (*models.Category, error) {
+	category, err := c.categoryRepo.GetById(newCategoryRequest.ID)
 	if err != nil {
 		return nil, err
 	}
-	category.Name = newCategory.Name
+	category.Name = newCategoryRequest.Name
 
 	if err := c.categoryRepo.Update(category); err != nil {
 		return nil, err

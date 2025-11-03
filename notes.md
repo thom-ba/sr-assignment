@@ -20,6 +20,7 @@ AI Usage:
 - Used AI to get resources to learn from
 - Used AI to explain certain functions in go I didnt use yet
 - Used AI to find resources to specific questions instead of searching for them for ages :<
+- Used AI to fix certain errors I didnt understand from the compilor error itself
 
 Why I use what tech:
 Frontend:
