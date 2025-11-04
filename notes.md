@@ -8,11 +8,15 @@ Event:
 - Name, Decr.,
 
 Problems I ran into:
-- at the start i named the field event.descr which can cause SQL syntax issues
+- at the start I named the field event.descr which can cause SQL syntax issues
 - After the first design I forgot one crucial thing:
 A icehockey team could be linked to a football game
 - I didnt give the venue a cap. (That is not really important for the callender, but when I was watching icehockey I remember being interested in how many people fit)
 - Started out with 1:1 relation in the comp (sport, category) even tho one sport or one category can have multiple competitions
+- Was wondering why my React.FC wasn't working until I noticed that I didnt generate the project with TypeScript
+- As I use Java or CPP normally, I often mixed up the naming conventions, which caused me to go back and change a lot of names afterwards
+- I had a problem with the postgre port already taken, but as I ran into this problem a lot of times already I knew how to fix it
+
 
 AI Usage:
 - GithubCopilot was DISABLED all the way through the whole project
@@ -21,6 +25,7 @@ AI Usage:
 - Used AI to explain certain functions in go I didnt use yet
 - Used AI to find resources to specific questions instead of searching for them for ages :<
 - Used AI to fix certain errors I didnt understand from the compilor error itself
+- Used AI to make a basic design of the frontend, so I can get ideas on how to make what look
 
 Why I use what tech:
 Frontend:
