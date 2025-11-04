@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar';
 import { EventList } from './components/EventList';
 import { Event } from './types';
 import Background from "./components/assets/Background.webp";
+import { AddModalEvent } from './components/AddEventModal';
 
 function App() {
     const mockEvents: Event[] = [
@@ -55,6 +56,31 @@ function App() {
             description: "Quarterfinal match of the Vienna Open."
         }
     ]
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const sports = [{
+        id: 1,
+        name: "Ernsthappel Stadion",
+        city: "Vienna",
+        capacity: 10,
+    }];
+    const venues = [{
+        id: 1,
+        name: "Test Venue",
+        city: "test",
+    }];
+
+    const handleAddEvent = () => { }
+
+    const handleAddSportEvent = (name: String) => {
+        return {
+            id: 1,
+            name: "newsport",
+            city: "vienna",
+            capacity: 0,
+        }
+    }
+
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar />
@@ -69,13 +95,26 @@ function App() {
                             <h1 className='text-4xl text-white font-bold tracking-tight'>
                                 Upcoming Events
                             </h1>
-                            <button className='bg-[#ea3323] hover:bg[#c62b1d] text-white font-semibold px-5 py-2 rounded-md transition-all duration-200'>
+                            <button
+                                onClick={() => setIsModalOpen(true)}
+                                className='bg-[#ea3323] hover:bg[#c62b1d] text-white font-semibold px-5 py-2 rounded-md transition-all duration-200'>
                                 Add Event
                             </button>
                         </div>
                         <div className='pt-5'>
                             <EventList events={mockEvents} />
                         </div>
+
+                        {isModalOpen && (
+                            <AddModalEvent
+                                onClose={() => setIsModalOpen(false)}
+                                onAddEvent={handleAddEvent}
+                                onAddSport={handleAddSportEvent}
+                                sports={sports}
+                                venues={venues}
+                            />
+                        )}
+
                     </div>
                 </div>
             </div>
