@@ -64,11 +64,18 @@ function App() {
                     style={{ backgroundImage: `url(${Background})` }}
                     className="bg-cover bg-center min-h-screen w-full"
                 >
-                    <div className='pt-10 px-10 flex justify-between items-center mb-6 flex-wrap gap-4'>
-                        <h1 className='text-4xl text-white font-bold tracking-tight pb-5'>
-                            Upcoming Events
-                        </h1>
-                        <EventList events={mockEvents} />
+                    <div className='pt-10 px-10'>
+                        <div className='flex justify-between items-center px-6 py-3 bg-[#00003c] rounded-lg shadow-md'>
+                            <h1 className='text-4xl text-white font-bold tracking-tight'>
+                                Upcoming Events
+                            </h1>
+                            <button className='bg-[#ea3323] hover:bg[#c62b1d] text-white font-semibold px-5 py-2 rounded-md transition-all duration-200'>
+                                Add Event
+                            </button>
+                        </div>
+                        <div className='pt-5'>
+                            <EventList events={mockEvents} />
+                        </div>
                     </div>
                 </div>
             </div>
