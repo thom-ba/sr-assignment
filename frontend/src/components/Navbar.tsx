@@ -4,7 +4,7 @@ import SportRadarWhite from "./assets/Sportradar-Brand-Line_Color_White.svg"
 const NavbarComp: React.FC = () => {
     return (
         <nav className="bg-[#00003c] text-white">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center h-16 px-4">
                 <h1>
                     <img src={SportRadarWhite} alt="Sportradar White Logo" className="h-12 m-4" />
                 </h1>
