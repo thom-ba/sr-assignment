@@ -5,6 +5,7 @@ import { Input } from "./ui/Input";
 import { CirclePlus } from "lucide-react";
 import { Button } from "./ui/Button";
 import { saveSport } from "../services/sportService";
+import { EventType } from "../types";
 
 interface AddEventModalProps {
     onClose: () => void;
@@ -12,18 +13,21 @@ interface AddEventModalProps {
     onAddSport: (newSport: Sport) => void;
     onAddCompetition: (newCompetition: Competition) => void;
     onAddCategory: (newCategory: Category) => void;
+    onAddEventType: (newEventType: EventType) => void;
+    eventTypes: EventType[],
     categories: Category[],
     sports: Sport[];
     venues: Venue[];
     competitions: Competition[];
 }
 
-export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, categories, sports, venues, competitions }) => {
+export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, eventTypes, categories, sports, venues, competitions }) => {
     const [formData, setFormData] = useState({
         dateTime: '',
         sportId: sports[0]?.id || '',
         venueId: sports[0]?.id || '',
         competitionId: sports[0]?.id || '',
+        eventType: '',
         homeTeam: '',
         awayTeam: '',
         description: '',
@@ -146,6 +150,16 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                 </div>
                             </div>
                         )}
+                    </div>
+                </div>
+
+                <div className="pt-3">
+                    <div className="pt-2">
+                        <label htmlFor="eventType" className="text-gray-300 text-sm">Event Type</label>
+                        <select name="eventType" id="eventType" value={formData.eventType} onChange={handleChange}
+                            className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-600">
+                            {eventTypes.map(eventType => <option key={eventType.id} value={eventType.id}>{eventType.name}</option>)}
+                        </select>
                     </div>
                 </div>
 

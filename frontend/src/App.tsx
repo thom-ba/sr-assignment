@@ -4,7 +4,7 @@ import './App.css';
 
 import { Navbar } from './components/Navbar';
 import { EventList } from './components/EventList';
-import { Category, Competition, Event, Sport } from './types';
+import { Category, Competition, Event, EventType, Sport } from './types';
 import Background from "./components/assets/Background.webp";
 import { AddModalEvent } from './components/AddEventModal';
 import { getSports } from './services/sportService';
@@ -87,6 +87,8 @@ function App() {
 
     const handleAddCategory = (newCategory: Category) => { }
 
+    const handleAddEventType = (newEventType: EventType) => { }
+
     const venues = [{
         id: 1,
         name: "Westside Soccer Arena",
@@ -105,6 +107,11 @@ function App() {
         category_id: 1,
         name: "Test",
         year: "2022",
+    }]
+
+    const eventTypes = [{
+        id: 1,
+        name: "WM",
     }]
 
     return (
@@ -138,11 +145,12 @@ function App() {
                                 onAddSport={handleAddSportEvent}
                                 onAddCompetition={handleAddCompetition}
                                 onAddCategory={handleAddCategory}
+                                onAddEventType={handleAddEventType}
+                                eventTypes={eventTypes}
                                 categories={categories}
                                 competitions={competitions}
                                 sports={sports}
                                 venues={venues}
-
                             />
                         )}
 

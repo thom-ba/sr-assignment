@@ -25,6 +25,11 @@ export interface Category  {
     name: string;
 }
 
+export interface EventType {
+    id: number,
+    name: string,
+}
+
 export interface Competition {
     id: number;
     sport_id: number;
