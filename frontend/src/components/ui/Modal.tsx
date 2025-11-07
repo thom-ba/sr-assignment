@@ -17,7 +17,7 @@ export const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
                 className="bg-[#212350] rounded-lg w-full max-w-2xl text-white transform transition-all"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="flex justify-between p-4 items-center text-lg font-bold">
+                <div className="flex justify-between p-4 items-center border-b border-gray-500 text-lg font-bold">
                     <h2 className="">{title}</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-white">
                         <XIcon className="w-6 h-6" />
