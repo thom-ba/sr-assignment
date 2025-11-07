@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { Category, Competition, Sport, Venue } from "../types";
 import { Modal } from "./ui/Modal";
 import { Input } from "./ui/Input";
@@ -22,7 +22,59 @@ interface AddEventModalProps {
     competitions: Competition[];
 }
 
+
+interface FormState {
+    step: number;
+    competitionId: number;
+    eventTypeId: number;
+    homeTeam: string;
+    awayTeam: string;
+    dateTime: string;
+    venueId: number;
+    description: string;
+}
+
+type FormAction =
+    | { type: 'SET_FIELD'; field: keyof Omit<FormState, 'step'>; value: string }
+    | { type: 'NEXT_STEP' }
+    | { type: 'PREVIOUS_STEP' }
+    | { type: 'RESET' };
+
+const initialState: FormState = {
+    step: 1,
+    competitionId: 0,
+    eventTypeId: 0,
+    homeTeam: '',
+    awayTeam: '',
+    dateTime: '',
+    venueId: 0,
+    description: '',
+};
+
+const formReducer = (state: FormState, action: FormAction): FormState => {
+    switch (action.type) {
+        case 'SET_FIELD':
+            return { ...state, [action.field]: action.value };
+        case 'NEXT_STEP':
+            return { ...state, step: state.step + 1 };
+        case 'PREVIOUS_STEP':
+            return { ...state, step: state.step - 1 };
+        case 'RESET':
+            return initialState;
+        default:
+            return state;
+    }
+};
+
 export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, onAddCompetition, eventTypes, categories, sports, venues, competitions }) => {
+    const [state, dispatch] = useReducer(formReducer, {
+        ...initialState,
+        competitionId: competitions[0]?.id || 0,
+        eventTypeId: eventTypes[0]?.id || 0,
+        venueId: venues[0]?.id || 0,
+    })
+
+
     const [formData, setFormData] = useState({
         dateTime: '',
         sportId: sports[0]?.id || '',

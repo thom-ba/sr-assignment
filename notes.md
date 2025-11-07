@@ -51,3 +51,5 @@ Backend:
 https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
 https://gorm.io/docs/
 https://blog.stackademic.com/golang-crud-rest-api-with-gin-and-gorm-service-repository-pattern-167afa8e9e87
+https://react.dev/reference/react/useReducer
+https://react.dev/reference/react/useReducer
