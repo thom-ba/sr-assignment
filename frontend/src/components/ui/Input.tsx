@@ -5,7 +5,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     id: string;
 }
 
-const InputComp: React.FC<InputProps> = ({ label, id, ...props }) => {
+export const Input: React.FC<InputProps> = ({ label, id, ...props }) => {
     return (
         <div className="pt-3">
             <label htmlFor={id}
@@ -18,15 +18,5 @@ const InputComp: React.FC<InputProps> = ({ label, id, ...props }) => {
                 {...props}
             />
         </div>
-    )
-}
-
-export function Input({ label, id, ...props}: InputProps) {
-    return (
-        <InputComp
-            label={label}
-            id={id}
-            {...props}
-        />
     )
 }

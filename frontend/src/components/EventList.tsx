@@ -60,7 +60,7 @@ interface EventListProps {
     events: Event[];
 }
 
-const EventListComp: React.FC<EventListProps> = ({ events }) => {
+export const EventList: React.FC<EventListProps> = ({ events }) => {
     return (
         <div
             className="bg-cover bg-center min-h-screen w-full"
@@ -79,7 +79,3 @@ const EventListComp: React.FC<EventListProps> = ({ events }) => {
         </div>
     );
 };
-
-export function EventList({ events }: EventListProps) {
-    return <EventListComp events={events} />;
-}

@@ -28,6 +28,7 @@ AI Usage:
 - Used AI to fix certain errors I didnt understand from the compilor error itself
 - Used AI to make a basic design of the frontend, so I can get ideas on how to make what look
 - Used AI to debug styling issues
+- Used AI to generate mock data
 
 Why I use what tech:
 Frontend:

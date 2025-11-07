@@ -12,7 +12,7 @@ interface AddEventModalProps {
     venues: Venue[];
 }
 
-const AddModalEventComp: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, sports, venues }) => {
+export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, sports, venues }) => {
     const [formData, setFormData] = useState({
         dateTime: '',
         sportId: sports[0]?.id || '',
@@ -41,16 +41,3 @@ const AddModalEventComp: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, 
         </Modal>
     )
 }
-
-export function AddModalEvent({ onClose, onAddEvent, onAddSport, sports, venues }: AddEventModalProps) {
-    return (
-        <AddModalEventComp
-            onClose={onClose}
-            onAddEvent={onAddEvent}
-            onAddSport={onAddSport}
-            sports={sports}
-            venues={venues}
-        />
-    )
-}
-

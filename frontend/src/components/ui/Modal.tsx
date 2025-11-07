@@ -7,7 +7,7 @@ interface ModalProps {
     children: React.ReactNode;
 }
 
-const ModalComp: React.FC<ModalProps> = ({ title, onClose, children }) => {
+export const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
     return (
         <div
             className="fixed inset-0 flex items-center justify-center z-50 p-4"
@@ -30,14 +30,3 @@ const ModalComp: React.FC<ModalProps> = ({ title, onClose, children }) => {
         </div>
     )
 }
-
-export function Modal({ title, onClose, children }: ModalProps) {
-    return (
-        <ModalComp
-            title={title}
-            onClose={onClose}
-            children={children}
-        />
-    )
-}
-

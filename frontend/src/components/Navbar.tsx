@@ -1,7 +1,7 @@
 import React from "react"
 import SportRadarWhite from "./assets/Sportradar-Brand-Line_Color_White.svg"
 
-const NavbarComp: React.FC = () => {
+export const Navbar: React.FC = () => {
     return (
         <nav className="bg-[#00003c] text-white">
             <div className="flex justify-between items-center h-16 px-4">
@@ -16,11 +16,5 @@ const NavbarComp: React.FC = () => {
                 </div>
             </div>
         </nav>
-    )
-}
-
-export function Navbar() {
-    return (
-        <NavbarComp />
     )
 }
