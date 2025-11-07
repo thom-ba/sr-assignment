@@ -4,7 +4,7 @@ import { Modal } from "./ui/Modal";
 import { Input } from "./ui/Input";
 import { CirclePlus } from "lucide-react";
 import { Button } from "./ui/Button";
-
+import { saveSport } from "../services/sportService";
 
 interface AddEventModalProps {
     onClose: () => void;
@@ -35,7 +35,19 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         setFormData(prev => ({ ...prev, [name]: value }))
     }
 
-    const handleSaveNewSport = () => { }
+    const handleSaveNewSport = async () => {
+        try {
+            const newSport = await saveSport(newSportName);
+
+            const createdSport = onAddSport(newSport.name);
+            setFormData(prev => ({ ...prev, sportId: createdSport.id }))
+
+            setNewSportName("");
+            setIsAddingNewSport(false);
+        } catch (error) {
+            console.error("Failed to save new sport: ", error)
+        }
+    };
 
     const handleSaveNewVenue = () => { }
 

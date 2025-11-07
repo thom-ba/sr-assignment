@@ -6,6 +6,7 @@ import (
 	"backend/repositories"
 	"backend/services"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -47,9 +48,19 @@ func main() {
 	sportController := controllers.NewSportController(sportService)
 
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
 	r.GET("/events/:eventID", controllers.GetEventController(eventService))
 
-	categoryRoutes := r.Group("/categories")
+	api := r.Group("/api/v1")
+
+	categoryRoutes := api.Group("/categories")
 	{
 		categoryRoutes.GET("/:categoryID", categoryController.GetCategoryById)
 		categoryRoutes.POST("/create", categoryController.CreateCategory)
@@ -57,7 +68,7 @@ func main() {
 		categoryRoutes.DELETE("/delete/:categoryID", categoryController.DeleteCategory)
 	}
 
-	sportRoutes := r.Group("/sports")
+	sportRoutes := api.Group("/sport")
 	{
 		sportRoutes.GET("/:sportID", sportController.GetSportById)
 		sportRoutes.POST("/create", sportController.CreateSport)
