@@ -152,31 +152,33 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     const renderStepContent = () => {
         switch (state.step) {
             case 1:
-                <div>
-                    {(() => {
-                        switch (step1View) {
-                            case 'addSport':
-                                return (
-                                    <div>
+                return (
+                    <div>
+                        {(() => {
+                            switch (step1View) {
+                                case 'addSport':
+                                    return (
+                                        <div>
 
-                                    </div>
-                                );
-                            case 'addCompetition':
-                                return (
-                                    <div>
+                                        </div>
+                                    );
+                                case 'addCompetition':
+                                    return (
+                                        <div>
 
-                                    </div>
-                                );
-                            case 'select':
-                            default:
-                                return (
-                                    <div>
+                                        </div>
+                                    );
+                                case 'select':
+                                default:
+                                    return (
+                                        <div>
 
-                                    </div>
-                                );
-                        }
-                    })()}
-                </div>
+                                        </div>
+                                    );
+                            }
+                        })()}
+                    </div>
+                );
             case 2:
                 return (
                     <div>
