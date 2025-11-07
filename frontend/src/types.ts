@@ -19,3 +19,16 @@ export interface Sport {
     id: number;
     name: string;
 }
+
+export interface Category  {
+    id: number;
+    name: string;
+}
+
+export interface Competition {
+    id: number;
+    sport_id: number;
+    category_id?: number;
+    name: string;
+    year: string;
+}

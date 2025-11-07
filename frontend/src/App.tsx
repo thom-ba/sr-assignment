@@ -4,7 +4,7 @@ import './App.css';
 
 import { Navbar } from './components/Navbar';
 import { EventList } from './components/EventList';
-import { Event, Sport } from './types';
+import { Category, Competition, Event, Sport } from './types';
 import Background from "./components/assets/Background.webp";
 import { AddModalEvent } from './components/AddEventModal';
 import { getSports } from './services/sportService';
@@ -83,11 +83,28 @@ function App() {
         setSports(prev => [...prev, newSport]);
     }
 
+    const handleAddCompetition = (newCompetition: Competition) => { }
+
+    const handleAddCategory = (newCategory: Category) => { }
+
     const venues = [{
         id: 1,
         name: "Westside Soccer Arena",
         city: "Vienna",
         capacity: 0,
+    }]
+
+    const categories = [{
+        id: 1,
+        name: "Men U18",
+    }]
+
+    const competitions = [{
+        id: 1,
+        sport_id: 2,
+        category_id: 1,
+        name: "Test",
+        year: "2022",
     }]
 
     return (
@@ -119,8 +136,13 @@ function App() {
                                 onClose={() => setIsModalOpen(false)}
                                 onAddEvent={handleAddEvent}
                                 onAddSport={handleAddSportEvent}
+                                onAddCompetition={handleAddCompetition}
+                                onAddCategory={handleAddCategory}
+                                categories={categories}
+                                competitions={competitions}
                                 sports={sports}
                                 venues={venues}
+
                             />
                         )}
 
