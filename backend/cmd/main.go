@@ -47,6 +47,10 @@ func main() {
 	sportService := services.NewSportService(sportRepo)
 	sportController := controllers.NewSportController(sportService)
 
+	competitionRepo := repositories.NewCompetitionRepo(database.GetDB())
+	competitionService := services.NewCompetitionSerivce(competitionRepo)
+	competitionController := controllers.NewCompetitionController(competitionService)
+
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
@@ -75,6 +79,13 @@ func main() {
 		sportRoutes.POST("/create", sportController.CreateSport)
 		sportRoutes.PATCH("/update", sportController.UpdateSport)
 		sportRoutes.DELETE("/delete/:sportID", sportController.DeleteSport)
+	}
+
+	competitionRoutes := api.Group("/competition")
+	{
+		competitionRoutes.GET("/:id", competitionController.GetCompetitionById)
+		competitionRoutes.GET("/:id/teams", competitionController.GetTeamsByCompetition)
+		competitionRoutes.POST("/create", competitionController.CreateCompetition)
 	}
 
 	r.Run()

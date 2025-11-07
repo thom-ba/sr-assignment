@@ -41,6 +41,25 @@ func (controller *CompetitionController) GetCompetitionById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, competition)
 }
 
+func (controller *CompetitionController) GetTeamsByCompetition(ctx *gin.Context) {
+	idParam := ctx.Param("comeptitionID")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+
+	if err != nil {
+		fmt.Print("Error\n", err)
+		return
+	}
+
+	uid := uint(id)
+	teams, err := controller.competitionService.GetCompetitionById(uid)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, teams)
+}
+
 func (controller *CompetitionController) CreateCompetition(ctx *gin.Context) {
 	req := requests.CreateCompetitionRequest{}
 	ctx.ShouldBind(&req)

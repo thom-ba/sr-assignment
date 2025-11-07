@@ -31,6 +31,15 @@ func (c *CompetitionServiceImpl) GetCompetitionById(id uint) (*models.Competitio
 	return competition, nil
 }
 
+func (c *CompetitionServiceImpl) GetTeamsByCompetition(id uint) ([]*models.Team, error) {
+	teams, err := c.competitionRepo.GetTeamsByCompetition(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return teams, nil
+}
+
 func (c *CompetitionServiceImpl) Insert(createCompetitionRequest requests.CreateCompetitionRequest) (*models.Competition, error) {
 	competition := &models.Competition{
 		SportID:    createCompetitionRequest.SportID,
