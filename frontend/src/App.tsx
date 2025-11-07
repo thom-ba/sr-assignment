@@ -11,6 +11,8 @@ import { getSports } from './services/sportService';
 
 function App() {
     const [sports, setSports] = useState<Sport[]>([]);
+    const [comps, setComps] = useState<Competition[]>([]);
+
     useEffect(() => {
         const fetchSports = async () => {
             try {
@@ -25,6 +27,7 @@ function App() {
             }
         }
         fetchSports();
+
     }, []);
 
     const mockEvents: Event[] = [
@@ -83,7 +86,9 @@ function App() {
         setSports(prev => [...prev, newSport]);
     }
 
-    const handleAddCompetition = (newCompetition: Competition) => { }
+    const handleAddCompetition = (newCompetition: Competition) => {
+        setComps(prev => [...prev, newCompetition])
+    }
 
     const handleAddCategory = (newCategory: Category) => { }
 
