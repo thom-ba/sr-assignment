@@ -74,6 +74,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         venueId: venues[0]?.id || 0,
     })
 
+    const [step1View, setStep1View] = useState<'select' | 'addCompetition' | 'addSport'>('select');
 
     const [formData, setFormData] = useState({
         dateTime: '',
@@ -98,6 +99,11 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
     const [isAddingNewVenue, setIsAddingNewVenue] = useState(false)
     const [newVenueName, setNewVenueName] = useState('')
+
+    const handleFieldChange = (field: keyof Omit<FormState, 'step'>, value: string) => {
+        dispatch({ type: 'SET_FIELD', field, value });
+    }
+
 
     const handleSubmit = () => { }
 
@@ -142,6 +148,51 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     }
 
     console.log(sports);
+
+    const renderStepContent = () => {
+        switch (state.step) {
+            case 1:
+                <div>
+                    {(() => {
+                        switch (step1View) {
+                            case 'addSport':
+                                return (
+                                    <div>
+
+                                    </div>
+                                );
+                            case 'addCompetition':
+                                return (
+                                    <div>
+
+                                    </div>
+                                );
+                            case 'select':
+                            default:
+                                return (
+                                    <div>
+
+                                    </div>
+                                );
+                        }
+                    })()}
+                </div>
+            case 2:
+                return (
+                    <div>
+
+                    </div>
+                );
+            case 3:
+                return (
+                    <div>
+
+                    </div>
+                );
+            default:
+                return null;
+        };
+    }
 
     return (
         <Modal title="Add new Event" onClose={onClose}>
