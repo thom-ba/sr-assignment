@@ -15,7 +15,12 @@ A icehockey team could be linked to a football game
 - Started out with 1:1 relation in the comp (sport, category) even tho one sport or one category can have multiple competitions
 
 AI Usage:
+- GithubCopilot was DISABLED all the way through the whole project
 - Checked my Schema Design for any obvious errors. Didnt find any but forgot about 3nf in one table
+- Used AI to get resources to learn from
+- Used AI to explain certain functions in go I didnt use yet
+- Used AI to find resources to specific questions instead of searching for them for ages :<
+- Used AI to fix certain errors I didnt understand from the compilor error itself
 
 Why I use what tech:
 Frontend:
@@ -26,3 +31,14 @@ Backend:
     - CRUD application: Gin (lightweight and simple to learn)
     - Database integration: GORM (easy database handling)
 Also both of these technologies should scale well so implementing search, pagination or filters later on shouldnt be a problem
+
+
+Design Patterns I used:
+    - Dependency injection
+    - Singleton
+
+
+# Resources:
+https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
+https://gorm.io/docs/
+https://blog.stackademic.com/golang-crud-rest-api-with-gin-and-gorm-service-repository-pattern-167afa8e9e87
