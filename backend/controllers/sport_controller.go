@@ -40,6 +40,17 @@ func (controller *SportController) GetSportById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, sport)
 }
 
+func (controller *SportController) GetAllSport(ctx *gin.Context) {
+	sports, err := controller.sportService.GetAllSport()
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, sports)
+}
+
 func (controller *SportController) CreateSport(ctx *gin.Context) {
 	req := requests.CreateSportRequest{}
 	ctx.ShouldBind(&req)

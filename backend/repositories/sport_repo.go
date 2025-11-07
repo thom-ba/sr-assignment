@@ -8,6 +8,7 @@ import (
 
 type SportRepo interface {
 	GetById(id uint) (*models.Sport, error)
+	GetAll() ([]*models.Sport, error)
 	Insert(sport *models.Sport) error
 	Update(sport *models.Sport) (*models.Sport, error)
 	Delete(id uint) error
@@ -30,6 +31,15 @@ func (s *SportRepoImpl) GetById(id uint) (*models.Sport, error) {
 	}
 
 	return &sport, nil
+}
+
+func (s *SportRepoImpl) GetAll() ([]*models.Sport, error) {
+	var sports []*models.Sport
+	if err := s.db.Find(&sports).Error; err != nil {
+		return nil, err
+	}
+
+	return sports, nil
 }
 
 func (s *SportRepoImpl) Insert(sport *models.Sport) error {

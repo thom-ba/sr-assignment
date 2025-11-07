@@ -1,14 +1,32 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 import { Navbar } from './components/Navbar';
 import { EventList } from './components/EventList';
-import { Event } from './types';
+import { Event, Sport } from './types';
 import Background from "./components/assets/Background.webp";
 import { AddModalEvent } from './components/AddEventModal';
+import { getSports } from './services/sportService';
 
 function App() {
+    const [sports, setSports] = useState<Sport[]>([]);
+    useEffect(() => {
+        const fetchSports = async () => {
+            try {
+                const data = await getSports();
+                const parsedSports: Sport[] = data.map((s: any) => ({
+                    id: s.ID,
+                    name: s.Name,
+                }));
+                setSports(parsedSports);
+            } catch (error) {
+                console.error("Error retrieving sports: ", error);
+            }
+        }
+        fetchSports();
+    }, []);
+
     const mockEvents: Event[] = [
         {
             id: 1,
@@ -58,17 +76,6 @@ function App() {
     ]
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const sports = [{
-        id: 1,
-        name: "Ernsthappel Stadion",
-        city: "Vienna",
-        capacity: 10,
-    }];
-    const venues = [{
-        id: 1,
-        name: "Test Venue",
-        city: "test",
-    }];
 
     const handleAddEvent = () => { }
 
@@ -80,6 +87,13 @@ function App() {
             capacity: 0,
         }
     }
+
+    const venues = [{
+        id: 1,
+        name: "Westside Soccer Arena",
+        city: "Vienna",
+        capacity: 0,
+    }]
 
     return (
         <div className="flex flex-col min-h-screen">

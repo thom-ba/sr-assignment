@@ -71,6 +71,7 @@ func main() {
 	sportRoutes := api.Group("/sport")
 	{
 		sportRoutes.GET("/:sportID", sportController.GetSportById)
+		sportRoutes.GET("/", sportController.GetAllSport)
 		sportRoutes.POST("/create", sportController.CreateSport)
 		sportRoutes.PATCH("/update", sportController.UpdateSport)
 		sportRoutes.DELETE("/delete/:sportID", sportController.DeleteSport)

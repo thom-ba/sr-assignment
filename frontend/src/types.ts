@@ -12,11 +12,10 @@ export interface Venue {
     id: number;
     name: string;
     city: string;
+    capacity: number;
 }
 
 export interface Sport {
     id: number;
     name: string;
-    city: string;
-    capacity: number;
 }

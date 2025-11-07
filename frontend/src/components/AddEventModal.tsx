@@ -51,6 +51,8 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
     const handleSaveNewVenue = () => { }
 
+    console.log(sports);
+
     return (
         <Modal title="Add new Event" onClose={onClose}>
             <form onSubmit={handleSubmit} className="">

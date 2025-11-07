@@ -10,3 +10,13 @@ export const saveSport = async (name: string): Promise<Sport> => {
         throw error;
     }
 };
+
+export const getSports = async(): Promise<Sport[]> => {
+    try {
+        const response = await api.get("/sport/")
+        return response.data;
+    } catch (error) {
+        console.error("Error retrieving sports: ", error);
+        throw error;
+    }
+};
