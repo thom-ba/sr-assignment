@@ -79,13 +79,8 @@ function App() {
 
     const handleAddEvent = () => { }
 
-    const handleAddSportEvent = (name: String) => {
-        return {
-            id: 1,
-            name: "newsport",
-            city: "vienna",
-            capacity: 0,
-        }
+    const handleAddSportEvent = (newSport: Sport) => {
+        setSports(prev => [...prev, newSport]);
     }
 
     const venues = [{

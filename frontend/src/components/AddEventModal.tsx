@@ -9,7 +9,7 @@ import { saveSport } from "../services/sportService";
 interface AddEventModalProps {
     onClose: () => void;
     onAddEvent: (event: Omit<Event, 'id'>) => void;
-    onAddSport: (name: string) => Sport;
+    onAddSport: (newSport: Sport) => void;
     sports: Sport[];
     venues: Venue[];
 }
@@ -38,10 +38,8 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     const handleSaveNewSport = async () => {
         try {
             const newSport = await saveSport(newSportName);
-
-            const createdSport = onAddSport(newSport.name);
-            setFormData(prev => ({ ...prev, sportId: createdSport.id }))
-
+            onAddSport(newSport);
+            setFormData(prev => ({ ...prev, sportId: newSport.id }))
             setNewSportName("");
             setIsAddingNewSport(false);
         } catch (error) {
