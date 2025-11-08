@@ -2,7 +2,7 @@ package models
 
 type Competition struct {
 	ID         uint `gorm:"primaryKey;autoIncrement"`
-	SportID    uint `gorm:"not null;index:idx_sport_name_year;unique"`
+	SportID    uint `gorm:"not null;index:idx_sport_name_year;"`
 	Sport      Sport
 	CategoryID uint `gorm:"not null"`
 	Category   Category
