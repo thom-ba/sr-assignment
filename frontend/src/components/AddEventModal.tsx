@@ -177,8 +177,8 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
                                 case 'addCompetition':
                                     return (
-                                        <div>
-                                            <div className="bg-gray-700 px-2 rounded-lg border">
+                                        <div className="pt-4">
+                                            <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400">
                                                 <h3>Create a New Competition</h3>
                                                 <Input id="newCompetition" name="newCompetition" label="New Competition Name" value={newCompetitionData.name} onChange={(e) => setNewCompetitionData(n => ({
                                                     ...n, name: e.target.value
@@ -226,13 +226,19 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                                     setNewCompetitionData(n => ({ ...n, sportId: sport.id }));
                                                                 }}
                                                                 className={`w-full text-left px-3 py-2 text-sm transition-colors ${newCompetitionData.sportId === sport.id
-                                                                        ? 'bg-emerald-500 text-white font-semibold'
-                                                                        : 'text-gray-200 hover:bg-gray-700'
+                                                                    ? 'bg-emerald-500 text-white font-semibold'
+                                                                    : 'text-gray-200 hover:bg-gray-700'
                                                                     }`}
                                                             >
                                                                 {sport.name}
                                                             </button>
                                                         ))}
+                                                </div>
+
+                                                <div>
+                                                    <Button type="button" variant="primary" onClick={() => setStep1View('select')}>
+                                                        Back
+                                                    </Button>
                                                 </div>
                                             </div>
                                         </div>
