@@ -106,13 +106,29 @@ function App() {
         name: "Men U18",
     }]
 
-    const competitions = [{
-        id: 1,
-        sport_id: 2,
-        category_id: 1,
-        name: "Test",
-        year: "2022",
-    }]
+    const competitions = [
+        {
+            id: 1,
+            sport_id: 2,
+            category_id: 1,
+            name: "Champions League",
+            year: "2022",
+        },
+        {
+            id: 2,
+            sport_id: 1,
+            category_id: 2,
+            name: "World Cup",
+            year: "2023",
+        },
+        {
+            id: 3,
+            sport_id: 3,
+            category_id: 1,
+            name: "National League",
+            year: "2024",
+        },
+    ];
 
     const eventTypes = [{
         id: 1,

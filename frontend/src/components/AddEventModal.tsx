@@ -78,9 +78,9 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
     const [formData, setFormData] = useState({
         dateTime: '',
-        sportId: sports[0]?.id || '',
-        venueId: sports[0]?.id || '',
-        competitionId: sports[0]?.id || '',
+        sportId: sports[0]?.id || 0,
+        venueId: sports[0]?.id || 0,
+        competitionId: sports[0]?.id || 0,
         eventType: '',
         homeTeam: '',
         awayTeam: '',
@@ -93,6 +93,8 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         categoryId: 0,
         year: '',
     });
+    const [competitionSearchTerm, setCompetitionSearchTerm] = useState('');
+    const [sportSearchTerm, setSportSearchTerm] = useState('');
 
     const [isAddingNewSport, setIsAddingNewSport] = useState(false)
     const [newSportName, setNewSportName] = useState('')
@@ -100,10 +102,9 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     const [isAddingNewVenue, setIsAddingNewVenue] = useState(false)
     const [newVenueName, setNewVenueName] = useState('')
 
-    const handleFieldChange = (field: keyof Omit<FormState, 'step'>, value: string) => {
+    const handleFieldChange = (field: keyof Omit<FormState, 'step'>, value: any) => {
         dispatch({ type: 'SET_FIELD', field, value });
     }
-
 
     const handleSubmit = () => { }
 
@@ -153,16 +154,19 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         switch (state.step) {
             case 1:
                 return (
-                    <div className="space-y-4">
+                    <div className="space-y-4 ">
                         {(() => {
                             switch (step1View) {
                                 case 'addSport':
                                     return (
                                         <div className="bg-gray-700 px-2 rounded-lg border border-gray-600">
+                                            <h2 className="text-lg font-bold text-white">
+                                                Create A New Sport
+                                            </h2>
                                             <Input id="newSport" name="newSport" label="New Sport Name" value={newSportName} onChange={(e) => setNewSportName(e.target.value)} />
                                             <div className="flex justify-end gap-2 pb-1">
-                                                <Button variant="primary" type="button" size="small" onClick={() => setIsAddingNewSport(false)}>
-                                                    Cancel
+                                                <Button variant="primary" type="button" size="small" onClick={() => setStep1View('addCompetition')}>
+                                                    Back
                                                 </Button>
                                                 <Button type="button" variant="primary" size="small" onClick={(handleSaveNewSport)}>
                                                     Save Sport
@@ -170,21 +174,123 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                             </div>
                                         </div>
                                     );
+
                                 case 'addCompetition':
                                     return (
                                         <div>
+                                            <div className="bg-gray-700 px-2 rounded-lg border">
+                                                <h3>Create a New Competition</h3>
+                                                <Input id="newCompetition" name="newCompetition" label="New Competition Name" value={newCompetitionData.name} onChange={(e) => setNewCompetitionData(n => ({
+                                                    ...n, name: e.target.value
+                                                }))}
+                                                />
+                                                <div className="pt-2">
+                                                    <label htmlFor="newCompetitionCategory" className="text-gray-300 text-sm">Category</label>
+                                                    <select name="newCompetitionCategory" id="competitionId" value={newCompetitionData.categoryId}
+                                                        onChange={(e) => setNewCompetitionData(n => ({ ...n, categoryId: Number(e.target.value) }))}
+                                                        className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-600">
+                                                        {categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
+                                                    </select>
+                                                </div>
 
+                                                <Input id="newCompetitionYear" name="year" label="Year" value={newCompetitionData.year}
+                                                    onChange={(e) => setNewCompetitionData(n => ({ ...n, year: e.target.value }))}
+                                                />
+
+                                                <div>
+                                                    <div className="flex justify-between items-center pt-4 pb-1">
+                                                        <label className="text-sm font-medium text-gray-300">Sport</label>
+                                                        <button type="button" onClick={() => setStep1View('addSport')} className="flex items-center gap-1 text-sm text-emerald-500">
+                                                            <CirclePlus className="w-4 h-4" />
+                                                            New
+                                                        </button>
+                                                    </div>
+                                                    <Input
+                                                        id="sport-search"
+                                                        type="search"
+                                                        placeholder="Search sports..."
+                                                        value={sportSearchTerm}
+                                                        onChange={(e) => setSportSearchTerm(e.target.value)}
+                                                        label=""
+                                                    />
+                                                </div>
+
+                                                <div className="flex justify-end gap-2 pb-1">
+                                                    {sports
+                                                        .filter(sport => sport.name.toLowerCase().includes(sportSearchTerm.toLowerCase()))
+                                                        .map(sport => (
+                                                            <button
+                                                                key={sport.id}
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setNewCompetitionData(n => ({ ...n, sportId: sport.id }));
+                                                                }}
+                                                                className={`w-full text-left px-3 py-2 text-sm transition-colors ${newCompetitionData.sportId === sport.id
+                                                                        ? 'bg-emerald-500 text-white font-semibold'
+                                                                        : 'text-gray-200 hover:bg-gray-700'
+                                                                    }`}
+                                                            >
+                                                                {sport.name}
+                                                            </button>
+                                                        ))}
+                                                </div>
+                                            </div>
                                         </div>
                                     );
+
                                 case 'select':
                                 default:
                                     return (
                                         <div>
+                                            <div className="flex justify-between items-center pt-4 pb-1">
+                                                <label htmlFor="comeptitionId" className="text-sm font-medium text-gray-300">Competition</label>
+                                                <button type="button" onClick={() => setStep1View('addCompetition')} className="flex items-center gap-1 text-sm text-emerald-500">
+                                                    <CirclePlus className="w-4 h-4" />
+                                                    New
+                                                </button>
+                                            </div>
 
+                                            <div>
+                                                <Input
+                                                    id="competitionSearch"
+                                                    type="search"
+                                                    value={competitionSearchTerm}
+                                                    onChange={(e) => setCompetitionSearchTerm(e.target.value)}
+                                                    placeholder="Search competitions..."
+                                                    label=""
+                                                />
+                                            </div>
+
+                                            <div className="mt-2 max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
+                                                {competitions
+                                                    .filter(competition => competition.name.toLowerCase().includes(competitionSearchTerm.toLowerCase()))
+                                                    .map(competition => (
+                                                        <button
+                                                            key={competition.id}
+                                                            type="button"
+                                                            onClick={() => handleFieldChange('competitionId', competition.id)}
+                                                            className={`w-full text-left px-3 py-2 text-sm transition-colors ${state.competitionId === competition.id
+                                                                ? 'bg-[#ea3323] text-white font-semibold'
+                                                                : 'text-gray-200 hover:bg-gray-700'
+                                                                }`}
+                                                        >
+                                                            {competition.name}
+                                                        </button>
+                                                    ))}
+                                            </div>
                                         </div>
                                     );
                             }
                         })()}
+                        {step1View === 'select' && (
+                            <div>
+                                <label htmlFor="eventType" className="text-gray-300 text-sm">Event Type</label>
+                                <select name="eventType" id="eventType" value={formData.eventType} onChange={handleChange}
+                                    className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-600">
+                                    {eventTypes.map(eventType => <option key={eventType.id} value={eventType.id}>{eventType.name}</option>)}
+                                </select>
+                            </div>
+                        )}
                     </div>
                 );
             case 2:
@@ -207,11 +313,11 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     return (
         <Modal title="Add New Event" onClose={onClose}>
             <form onSubmit={handleSubmit} className="">
-                <div>
+                <div className="min-h-[500px]">
                     {renderStepContent()}
                 </div>
 
-                <div className="flex">
+                <div className="flex justify-between items-center pt-4 border-t border-gray-700">
                     <div>
                         {state.step > 1 && (
                             <Button type="button" variant="primary" onClick={() => dispatch({ type: 'PREVIOUS_STEP' })}>
@@ -219,11 +325,11 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                             </Button>
                         )}
                     </div>
-                    <div className="">
+                    <div className="flex gap-3">
                         <Button type="button" variant="primary" onClick={onClose}>
                             Cancel
                         </Button>
-                        {state.step > 3 && (
+                        {state.step < 3 && (
                             <Button type="button" variant="primary" onClick={() => dispatch({ type: 'NEXT_STEP' })}>
                                 Next
                             </Button>
@@ -238,5 +344,4 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
             </form>
         </Modal >
     )
-
 }
