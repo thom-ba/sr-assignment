@@ -67,6 +67,7 @@ func main() {
 	categoryRoutes := api.Group("/categories")
 	{
 		categoryRoutes.GET("/:categoryID", categoryController.GetCategoryById)
+		categoryRoutes.GET("/", categoryController.GetAllCategories)
 		categoryRoutes.POST("/create", categoryController.CreateCategory)
 		categoryRoutes.PATCH("/update", categoryController.UpdateCategory) // We use PATCH as we dont update the WHOLE resource
 		categoryRoutes.DELETE("/delete/:categoryID", categoryController.DeleteCategory)

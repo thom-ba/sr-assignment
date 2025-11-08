@@ -40,6 +40,16 @@ func (controller *CategoryController) GetCategoryById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, category)
 }
 
+func (controller *CategoryController) GetAllCategories(ctx *gin.Context) {
+	categories, err := controller.categoryService.GetAllCategories()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, categories)
+}
+
 func (controller *CategoryController) CreateCategory(ctx *gin.Context) {
 	req := requests.CreateCategoryRequest{}
 	ctx.ShouldBindJSON(&req)

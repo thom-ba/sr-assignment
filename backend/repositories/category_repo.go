@@ -8,6 +8,7 @@ import (
 
 type CategoryRepo interface {
 	GetById(id uint) (*models.Category, error)
+	GetAllCategories() ([]*models.Category, error)
 	Insert(category *models.Category) error
 	Update(category *models.Category) error
 	Delete(id uint) error
@@ -30,6 +31,17 @@ func (r *CategoryRepoImpl) GetById(id uint) (*models.Category, error) {
 	}
 
 	return &c, nil
+}
+
+func (r *CategoryRepoImpl) GetAllCategories() ([]*models.Category, error) {
+	var categories []*models.Category
+
+	if err := r.db.Find(&categories).Error; err != nil {
+		return nil, err
+	}
+
+	return categories, nil
+
 }
 
 func (r *CategoryRepoImpl) Insert(category *models.Category) error {

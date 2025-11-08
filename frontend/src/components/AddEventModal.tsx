@@ -129,12 +129,14 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     const handleSaveNewVenue = () => { }
 
     const handleSaveNewCompetition = async () => {
+        console.log("DEBUG YEAR: ", newCompetitionData.year);
+
         try {
             const competitionToSave = {
                 name: newCompetitionData.name,
-                sportId: newCompetitionData.sportId,
-                categoryId: newCompetitionData.categoryId,
-                year: newCompetitionData.year,
+                sport_id: newCompetitionData.sportId,
+                category_id: newCompetitionData.categoryId,
+                year: `${newCompetitionData.year}`,
             };
 
             const newCompetition = await saveCompetition(competitionToSave);

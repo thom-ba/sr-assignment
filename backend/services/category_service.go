@@ -9,6 +9,7 @@ import (
 
 type CategoryService interface {
 	GetCategoryById(id uint) (*models.Category, error)
+	GetAllCategories() ([]*models.Category, error)
 	Insert(categoryRequest requests.CreateCategoryRequest) (*models.Category, error)
 	Update(newCategory requests.UpdateCategoryRequest) (*models.Category, error)
 	Delete(id uint) error
@@ -31,6 +32,15 @@ func (c *CategoryServiceImpl) GetCategoryById(id uint) (*models.Category, error)
 	}
 
 	return category, nil
+}
+
+func (c *CategoryServiceImpl) GetAllCategories() ([]*models.Category, error) {
+	categories, err := c.categoryRepo.GetAllCategories()
+	if err != nil {
+		return nil, err
+	}
+
+	return categories, nil
 }
 
 func (c *CategoryServiceImpl) Insert(createCategoryRequest requests.CreateCategoryRequest) (*models.Category, error) {

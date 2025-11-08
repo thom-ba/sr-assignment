@@ -9,10 +9,12 @@ import Background from "./components/assets/Background.webp";
 import { AddModalEvent } from "./components/AddEventModal";
 import { getSports } from "./services/sportService";
 import { getCompetitions } from "./services/competitionService";
+import { getCategories } from "./services/categoryService";
 
 function App() {
     const [sports, setSports] = useState<Sport[]>([]);
-    const [comps, setComps] = useState<Competition[]>([]);
+    const [competitions, setCompetitions] = useState<Competition[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     useEffect(() => {
         const fetchSports = async () => {
@@ -38,13 +40,28 @@ function App() {
                     sport_id: c.SportId,
                     year: c.Year,
                 }));
-                setComps(parsedCompetitions);
+                setCompetitions(parsedCompetitions);
             } catch (error) {
                 console.error("Error retrieving competitions: ", error);
             }
         };
 
         fetchCompetitions();
+
+        const fetchCategories = async () => {
+            try {
+                const data = await getCategories();
+                const parsedCategories: Category[] = data.map((c: any) => ({
+                    id: c.ID,
+                    name: c.Name,
+                }));
+                setCategories(parsedCategories);
+            } catch (error) {
+                console.error("Error retrieving categories: ", error);
+            }
+        }
+
+        fetchCategories();
     }, []);
 
     const mockEvents: Event[] = [
@@ -104,7 +121,7 @@ function App() {
     };
 
     const handleAddCompetition = (newCompetition: Competition) => {
-        setComps((prev) => [...prev, newCompetition]);
+        setCompetitions((prev) => [...prev, newCompetition]);
     };
 
     const handleAddCategory = (newCategory: Category) => { };
@@ -117,37 +134,6 @@ function App() {
             name: "Westside Soccer Arena",
             city: "Vienna",
             capacity: 0,
-        },
-    ];
-
-    const categories = [
-        {
-            id: 1,
-            name: "Men U18",
-        },
-    ];
-
-    const competitions = [
-        {
-            id: 1,
-            sport_id: 2,
-            category_id: 1,
-            name: "Champions League",
-            year: "2022",
-        },
-        {
-            id: 2,
-            sport_id: 1,
-            category_id: 2,
-            name: "World Cup",
-            year: "2023",
-        },
-        {
-            id: 3,
-            sport_id: 3,
-            category_id: 1,
-            name: "National League",
-            year: "2024",
         },
     ];
 
@@ -193,7 +179,7 @@ function App() {
                                 onAddEventType={handleAddEventType}
                                 eventTypes={eventTypes}
                                 categories={categories}
-                                competitions={comps}
+                                competitions={competitions}
                                 sports={sports}
                                 venues={venues}
                             />

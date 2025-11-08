@@ -75,6 +75,8 @@ func (controller *CompetitionController) CreateCompetition(ctx *gin.Context) {
 	req := requests.CreateCompetitionRequest{}
 	ctx.ShouldBind(&req)
 
+	fmt.Println("Year: ", req.Year)
+
 	competition, err := controller.competitionService.Insert(req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
