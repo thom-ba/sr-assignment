@@ -61,6 +61,7 @@ function App() {
         }
 
         fetchCategories();
+        console.log("Categories: ", categories);
     }, []);
 
     const mockEvents: Event[] = [

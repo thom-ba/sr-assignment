@@ -153,11 +153,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
     const handleSaveNewCategory = async () => {
         try {
-            const categoryToSave = {
-                name: newCategoryName,
-            };
-
-            const newCategory = await saveCategory(categoryToSave);
+            const newCategory = await saveCategory(newCategoryName);
 
             onAddCategory(newCategory)
             setNewCategoryName('');
@@ -231,7 +227,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                         </button>
                                                     </div>
                                                     <select name="newCompetitionCategory" id="competitionId" value={newCompetitionData.categoryId}
-                                                        onChange={(e) => setNewCompetitionData(n => ({ ...n, categoryId: Number(e.target.value) }))}
+                                                        onChange={(e) => setNewCompetitionData(n => ({ ...n, categoryId: parseInt(e.target.value, 10) }))}
                                                         className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-600">
                                                         {categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
                                                     </select>

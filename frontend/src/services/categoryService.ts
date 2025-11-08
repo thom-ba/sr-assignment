@@ -14,11 +14,11 @@ export const getCategories = async (): Promise<Category[]> => {
     }
 }
 
-export const saveCategory = async (category: { name: string }): Promise<Category> => {
-    console.log("Trying to save Category");
+export const saveCategory = async (name: string): Promise<Category> => {
+    console.log("Debug: ", name);
 
     try {
-        const response = await api.post("categories/create");
+        const response = await api.post("categories/create", { name });
         return response.data;
     } catch (error) {
         console.error("Error saving category: ", error);
