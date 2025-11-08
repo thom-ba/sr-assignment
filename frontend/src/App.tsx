@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import logo from "./logo.svg";
-import "./App.css";
 
 import { Navbar } from "./components/Navbar";
 import { EventList } from "./components/EventList";
@@ -124,7 +123,10 @@ function App() {
         setCompetitions((prev) => [...prev, newCompetition]);
     };
 
-    const handleAddCategory = (newCategory: Category) => { };
+
+    const handleAddCategory = (newCategory: Category) => {
+        setCategories((prev) => [...prev, newCategory]);
+    };
 
     const handleAddEventType = (newEventType: EventType) => { };
 

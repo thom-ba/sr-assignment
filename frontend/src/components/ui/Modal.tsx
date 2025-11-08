@@ -1,5 +1,5 @@
 import { XIcon } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface ModalProps {
     title: string;
@@ -8,13 +8,20 @@ interface ModalProps {
 }
 
 export const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
+    useEffect(() => {
+        document.body.style.overflow = "hidden"
+        return () => {
+            document.body.style.overflow = "";
+        }
+    }, []);
+
     return (
         <div
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 flex items-center justify-center z-50 p-4 backdrop-blur-md bg-white/10"
             onClick={onClose}
         >
             <div
-                className="bg-[#212350] rounded-lg w-full max-w-2xl text-white transform transition-all"
+                className="bg-[#212350] rounded-lg w-full max-w-2xl text-white transform transition-all "
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-between p-4 items-center border-b border-gray-500 text-lg font-bold">

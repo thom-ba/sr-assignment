@@ -7,6 +7,7 @@ import { Button } from "./ui/Button";
 import { saveSport } from "../services/sportService";
 import { EventType } from "../types";
 import { saveCompetition } from "../services/competitionService";
+import { saveCategory } from "../services/categoryService";
 
 interface AddEventModalProps {
     onClose: () => void;
@@ -66,7 +67,7 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
     }
 };
 
-export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, onAddCompetition, eventTypes, categories, sports, venues, competitions }) => {
+export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, onAddCategory, onAddCompetition, eventTypes, categories, sports, venues, competitions }) => {
     const [state, dispatch] = useReducer(formReducer, {
         ...initialState,
         competitionId: competitions[0]?.id || 0,
@@ -129,8 +130,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     const handleSaveNewVenue = () => { }
 
     const handleSaveNewCompetition = async () => {
-        console.log("DEBUG YEAR: ", newCompetitionData.year);
-
         try {
             const competitionToSave = {
                 name: newCompetitionData.name,
@@ -148,11 +147,25 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
             setIsAddingNewCompetition(false);
             setStep1View('select')
         } catch (error) {
-            console.error("Failed to save new Category :", error);
+            console.error("Failed to save new Competition:", error);
         }
     }
 
-    const handleSaveNewCategory = () => { }
+    const handleSaveNewCategory = async () => {
+        try {
+            const categoryToSave = {
+                name: newCategoryName,
+            };
+
+            const newCategory = await saveCategory(categoryToSave);
+
+            onAddCategory(newCategory)
+            setNewCategoryName('');
+            setStep1View('addCompetition')
+        } catch (error) {
+            console.error("Failed to save new Category: ", error);
+        }
+    }
 
     console.log(sports);
 
@@ -183,13 +196,13 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
                                 case 'addCategory':
                                     return (
-                                        <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-600">
-                                            <h2 className="text-lg font-bold text-white">
+                                        <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400 mt-4">
+                                            <h2 className="text-lg font-bold text-white pb-2">
                                                 Create A New Category
                                             </h2>
                                             <Input id="newCategory" name="newCategory" label="New Category Name" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} />
                                             <div className="flex justify-end gap-2 pb-1">
-                                                <Button type="button" variant="primary" size="small" onClick={() => setStep1View('select')}>
+                                                <Button type="button" variant="primary" size="small" onClick={() => setStep1View('addCompetition')}>
                                                     Back
                                                 </Button>
                                                 <Button type="button" variant="primary" size="small" onClickCapture={(handleSaveNewCategory)}>
@@ -202,13 +215,21 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                     return (
                                         <div className="pt-4">
                                             <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400">
-                                                <h3>Create a New Competition</h3>
+                                                <h3 className="pb-3">
+                                                    Create a New Competition
+                                                </h3>
                                                 <Input id="newCompetition" name="newCompetition" label="New Competition Name" value={newCompetitionData.name} onChange={(e) => setNewCompetitionData(n => ({
                                                     ...n, name: e.target.value
                                                 }))}
                                                 />
-                                                <div className="pt-2">
-                                                    <label htmlFor="newCompetitionCategory" className="text-gray-300 text-sm">Category</label>
+                                                <div className="py-4">
+                                                    <div className="flex justify-between py-1">
+                                                        <label htmlFor="newCompetitionCategory" className="text-gray-300 text-sm font-medium">Category</label>
+                                                        <button type="button" onClick={() => setStep1View('addCategory')} className="flex items-center gap-1  text-sm text-emerald-500">
+                                                            <CirclePlus className="w-4 h-4" />
+                                                            New
+                                                        </button>
+                                                    </div>
                                                     <select name="newCompetitionCategory" id="competitionId" value={newCompetitionData.categoryId}
                                                         onChange={(e) => setNewCompetitionData(n => ({ ...n, categoryId: Number(e.target.value) }))}
                                                         className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-600">
@@ -220,8 +241,8 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                     onChange={(e) => setNewCompetitionData(n => ({ ...n, year: e.target.value }))}
                                                 />
 
-                                                <div>
-                                                    <div className="flex justify-between items-center pt-4 pb-1">
+                                                <div className="py-4">
+                                                    <div className="flex justify-between items-center">
                                                         <label className="text-sm font-medium text-gray-300">Sport</label>
                                                         <button type="button" onClick={() => setStep1View('addSport')} className="flex items-center gap-1 text-sm text-emerald-500">
                                                             <CirclePlus className="w-4 h-4" />
@@ -238,7 +259,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                     />
                                                 </div>
 
-                                                <div className="mt-2 max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
+                                                <div className="max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
                                                     {sports
                                                         .filter(sport => sport.name.toLowerCase().includes(sportSearchTerm.toLowerCase()))
                                                         .map(sport => (
