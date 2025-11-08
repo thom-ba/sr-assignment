@@ -237,9 +237,9 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                         label=""
                                                     />
                                                 </div>
-                                                <div className="max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
+                                                <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600">
                                                     {categories
-                                                        .filter(category => category.name.toLowerCase().includes(sportSearchTerm.toLowerCase()))
+                                                        .filter(category => category.name?.toLowerCase().includes(sportSearchTerm.toLowerCase()))
                                                         .map(category => (
                                                             <button
                                                                 key={category.id}
@@ -257,12 +257,13 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                         ))}
                                                 </div>
 
+                                                <div className="pt-4">
+                                                    <Input id="newCompetitionYear" name="year" label="Year" value={newCompetitionData.year}
+                                                        onChange={(e) => setNewCompetitionData(n => ({ ...n, year: e.target.value }))}
+                                                    />
+                                                </div>
 
-                                                <Input id="newCompetitionYear" name="year" label="Year" value={newCompetitionData.year}
-                                                    onChange={(e) => setNewCompetitionData(n => ({ ...n, year: e.target.value }))}
-                                                />
-
-                                                <div className="py-4">
+                                                <div className="pt-4">
                                                     <div className="flex justify-between items-center">
                                                         <label className="text-sm font-medium text-gray-300">Sport</label>
                                                         <button type="button" onClick={() => setStep1View('addSport')} className="flex items-center gap-1 text-sm text-emerald-500">
@@ -280,9 +281,9 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                     />
                                                 </div>
 
-                                                <div className="max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
+                                                <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600">
                                                     {sports
-                                                        .filter(sport => sport.name.toLowerCase().includes(sportSearchTerm.toLowerCase()))
+                                                        .filter(sport => sport.name?.toLowerCase().includes(sportSearchTerm.toLowerCase()))
                                                         .map(sport => (
                                                             <button
                                                                 key={sport.id}
@@ -314,7 +315,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                 case 'select':
                                 default:
                                     return (
-                                        <div>
+                                        <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400 mt-2">
                                             <div className="flex justify-between items-center pt-4 pb-1">
                                                 <label htmlFor="comeptitionId" className="text-sm font-medium text-gray-300">Competition</label>
                                                 <button type="button" onClick={() => setStep1View('addCompetition')} className="flex items-center gap-1 text-sm text-emerald-500">
@@ -334,9 +335,9 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                 />
                                             </div>
 
-                                            <div className="mt-2 max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
+                                            <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600">
                                                 {competitions
-                                                    .filter(competition => competition.name.toLowerCase().includes(competitionSearchTerm.toLowerCase()))
+                                                    .filter(competition => competition.name?.toLowerCase().includes(competitionSearchTerm.toLowerCase()))
                                                     .map(competition => (
                                                         <button
                                                             key={competition.id}
@@ -368,8 +369,12 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                 );
             case 2:
                 return (
-                    <div>
-
+                    <div className="bg-gray-600 py-4 px-4 mt-4 rounded-lg border border-gray-400">
+                        <div className="grid grid-cols-2 gap-4">
+                            <Input id="homeTeam" name="homeTeam" label="Home Team" value={formData.homeTeam} onChange={handleChange} />
+                            <Input id="awayTeam" name="awayTeam" label="Away Team" value={formData.awayTeam} onChange={handleChange} />
+                        </div>
+                        <Input id="dateTime" name="dateTime" label="Date and Time" type="datetime-local" value={formData.dateTime} onChange={handleChange}></Input>
                     </div>
                 );
             case 3:
