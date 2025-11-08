@@ -74,7 +74,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         venueId: venues[0]?.id || 0,
     })
 
-    const [step1View, setStep1View] = useState<'select' | 'addCompetition' | 'addSport'>('select');
+    const [step1View, setStep1View] = useState<'select' | 'addCompetition' | 'addSport' | 'addCategory'>('select');
 
     const [formData, setFormData] = useState({
         dateTime: '',
@@ -93,10 +93,11 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         categoryId: 0,
         year: '',
     });
+    const [newCategoryName, setNewCategoryName] = useState('')
+
     const [competitionSearchTerm, setCompetitionSearchTerm] = useState('');
     const [sportSearchTerm, setSportSearchTerm] = useState('');
 
-    const [isAddingNewSport, setIsAddingNewSport] = useState(false)
     const [newSportName, setNewSportName] = useState('')
 
     const [isAddingNewVenue, setIsAddingNewVenue] = useState(false)
@@ -119,7 +120,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
             onAddSport(newSport);
             setFormData(prev => ({ ...prev, sportId: newSport.id }))
             setNewSportName("");
-            setIsAddingNewSport(false);
             setStep1View('addCompetition')
         } catch (error) {
             console.error("Failed to save new sport: ", error)
@@ -146,10 +146,13 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
             setNewCompetitionData({ name: '', categoryId: 0, sportId: 0, year: '' })
             setIsAddingNewCompetition(false);
+            setStep1View('select')
         } catch (error) {
             console.error("Failed to save new Category :", error);
         }
     }
+
+    const handleSaveNewCategory = () => { }
 
     console.log(sports);
 
@@ -178,6 +181,23 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                         </div>
                                     );
 
+                                case 'addCategory':
+                                    return (
+                                        <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-600">
+                                            <h2 className="text-lg font-bold text-white">
+                                                Create A New Category
+                                            </h2>
+                                            <Input id="newCategory" name="newCategory" label="New Category Name" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} />
+                                            <div className="flex justify-end gap-2 pb-1">
+                                                <Button type="button" variant="primary" size="small" onClick={() => setStep1View('select')}>
+                                                    Back
+                                                </Button>
+                                                <Button type="button" variant="primary" size="small" onClickCapture={(handleSaveNewCategory)}>
+                                                    Save Category
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )
                                 case 'addCompetition':
                                     return (
                                         <div className="pt-4">
@@ -249,7 +269,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                             </div>
                                         </div>
                                     );
-
                                 case 'select':
                                 default:
                                     return (
