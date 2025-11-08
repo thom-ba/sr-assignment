@@ -84,6 +84,7 @@ func main() {
 	competitionRoutes := api.Group("/competition")
 	{
 		competitionRoutes.GET("/:id", competitionController.GetCompetitionById)
+		competitionRoutes.GET("/", competitionController.GetAllCompetitions)
 		competitionRoutes.GET("/:id/teams", competitionController.GetTeamsByCompetition)
 		competitionRoutes.POST("/create", competitionController.CreateCompetition)
 	}

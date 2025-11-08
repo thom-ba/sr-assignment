@@ -8,6 +8,7 @@ import (
 
 type CompetitionService interface {
 	GetCompetitionById(id uint) (*models.Competition, error)
+	GetAllCompetitions() ([]*models.Competition, error)
 	Insert(createCompetitionRequest requests.CreateCompetitionRequest) (*models.Competition, error)
 	Update(newCompetitionRequest requests.UpdateCompetitionRequest) (*models.Competition, error)
 }
@@ -29,6 +30,16 @@ func (c *CompetitionServiceImpl) GetCompetitionById(id uint) (*models.Competitio
 	}
 
 	return competition, nil
+}
+
+func (c *CompetitionServiceImpl) GetAllCompetitions() ([]*models.Competition, error) {
+	competitions, err := c.competitionRepo.GetAllCompetitions()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return competitions, nil
 }
 
 func (c *CompetitionServiceImpl) GetTeamsByCompetition(id uint) ([]*models.Team, error) {

@@ -240,7 +240,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                     <Button type="button" variant="primary" onClick={() => setStep1View('select')}>
                                                         Back
                                                     </Button>
-                                                    <Button type="button" variant="primary" onClick={() => saveCompetition}>
+                                                    <Button type="button" variant="primary" onClick={() => handleSaveNewCompetition()}>
                                                         Save Competition
                                                     </Button>
                                                 </div>

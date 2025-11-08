@@ -8,6 +8,7 @@ import (
 
 type CompetitionRepo interface {
 	GetById(id uint) (*models.Competition, error)
+	GetAllCompetitions() ([]*models.Competition, error)
 	GetTeamsByCompetition(id uint) ([]*models.Team, error)
 	Insert(competition *models.Competition) (*models.Competition, error)
 	Update(competition *models.Competition) (*models.Competition, error)
@@ -31,6 +32,16 @@ func (c *CompetitionRepoImpl) GetById(id uint) (*models.Competition, error) {
 	}
 
 	return &competition, nil
+}
+
+func (c *CompetitionRepoImpl) GetAllCompetitions() ([]*models.Competition, error) {
+	var competitions []*models.Competition
+
+	if err := c.db.Find(&competitions).Error; err != nil {
+		return nil, err
+	}
+
+	return competitions, nil
 }
 
 func (c *CompetitionRepoImpl) GetTeamsByCompetition(id uint) ([]*models.Team, error) {

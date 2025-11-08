@@ -7,7 +7,6 @@ export const saveCompetition = async (competition: {
     categoryId: number;
     year: string;
 }): Promise<Competition> => {
-
     console.log("Trying to save: ", competition);
 
     try {
@@ -17,4 +16,16 @@ export const saveCompetition = async (competition: {
         console.error("Error saving competition: ", error);
         throw error;
     }
-}
+};
+
+export const getCompetitions = async (): Promise<Competition[]> => {
+    console.log("Trying to get competition.");
+
+    try {
+        const response = await api.get("/competition/");
+        return response.data;
+    } catch (error) {
+        console.error("Error retrieving competitions: ", error);
+        throw error;
+    }
+};

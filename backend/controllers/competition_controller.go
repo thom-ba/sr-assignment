@@ -41,6 +41,17 @@ func (controller *CompetitionController) GetCompetitionById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, competition)
 }
 
+func (controller *CompetitionController) GetAllCompetitions(ctx *gin.Context) {
+	competitions, err := controller.competitionService.GetAllCompetitions()
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, competitions)
+}
+
 func (controller *CompetitionController) GetTeamsByCompetition(ctx *gin.Context) {
 	idParam := ctx.Param("comeptitionID")
 	id, err := strconv.ParseUint(idParam, 10, 64)
