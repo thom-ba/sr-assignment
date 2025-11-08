@@ -96,6 +96,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     });
     const [newCategoryName, setNewCategoryName] = useState('')
 
+    const [categorySearchTerm, setCategorySearchTerm] = useState('');
     const [competitionSearchTerm, setCompetitionSearchTerm] = useState('');
     const [sportSearchTerm, setSportSearchTerm] = useState('');
 
@@ -218,20 +219,44 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                     ...n, name: e.target.value
                                                 }))}
                                                 />
-                                                <div className="py-4">
-                                                    <div className="flex justify-between py-1">
-                                                        <label htmlFor="newCompetitionCategory" className="text-gray-300 text-sm font-medium">Category</label>
-                                                        <button type="button" onClick={() => setStep1View('addCategory')} className="flex items-center gap-1  text-sm text-emerald-500">
+
+                                                <div className="pt-4">
+                                                    <div className="flex justify-between items-center">
+                                                        <label className="text-sm font-medium text-gray-300">Category</label>
+                                                        <button type="button" onClick={() => setStep1View('addCategory')} className="flex items-center gap-1 text-sm text-emerald-500">
                                                             <CirclePlus className="w-4 h-4" />
                                                             New
                                                         </button>
                                                     </div>
-                                                    <select name="newCompetitionCategory" id="competitionId" value={newCompetitionData.categoryId}
-                                                        onChange={(e) => setNewCompetitionData(n => ({ ...n, categoryId: parseInt(e.target.value, 10) }))}
-                                                        className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-600">
-                                                        {categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
-                                                    </select>
+                                                    <Input
+                                                        id="category_search"
+                                                        type="search"
+                                                        placeholder="Search Categories..."
+                                                        value={categorySearchTerm}
+                                                        onChange={(e) => setCategorySearchTerm(e.target.value)}
+                                                        label=""
+                                                    />
                                                 </div>
+                                                <div className="max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
+                                                    {categories
+                                                        .filter(category => category.name.toLowerCase().includes(sportSearchTerm.toLowerCase()))
+                                                        .map(category => (
+                                                            <button
+                                                                key={category.id}
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    setNewCompetitionData(n => ({ ...n, categoryId: category.id }));
+                                                                }}
+                                                                className={`w-full text-left px-3 py-2 text-sm transition-colors ${newCompetitionData.categoryId === category.id
+                                                                    ? 'bg-[#ea3323] text-white font-semibold'
+                                                                    : 'text-gray-200 hover:bg-gray-700'
+                                                                    }`}
+                                                            >
+                                                                {category.name}
+                                                            </button>
+                                                        ))}
+                                                </div>
+
 
                                                 <Input id="newCompetitionYear" name="year" label="Year" value={newCompetitionData.year}
                                                     onChange={(e) => setNewCompetitionData(n => ({ ...n, year: e.target.value }))}

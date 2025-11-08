@@ -4,6 +4,7 @@ import (
 	"backend/models"
 	"backend/repositories"
 	"backend/requests"
+	"strconv"
 )
 
 type CompetitionService interface {
@@ -52,11 +53,17 @@ func (c *CompetitionServiceImpl) GetTeamsByCompetition(id uint) ([]*models.Team,
 }
 
 func (c *CompetitionServiceImpl) Insert(createCompetitionRequest requests.CreateCompetitionRequest) (*models.Competition, error) {
+	year, err := strconv.ParseUint(createCompetitionRequest.Year, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	yearuint := uint(year)
+
 	competition := &models.Competition{
 		SportID:    createCompetitionRequest.SportID,
 		CategoryID: createCompetitionRequest.CategoryID,
 		Name:       createCompetitionRequest.Name,
-		Year:       createCompetitionRequest.Year,
+		Year:       yearuint,
 	}
 
 	comp, err := c.competitionRepo.Insert(competition)
