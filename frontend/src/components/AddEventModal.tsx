@@ -120,6 +120,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
             setFormData(prev => ({ ...prev, sportId: newSport.id }))
             setNewSportName("");
             setIsAddingNewSport(false);
+            setStep1View('addCompetition')
         } catch (error) {
             console.error("Failed to save new sport: ", error)
         }
@@ -235,9 +236,12 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                         ))}
                                                 </div>
 
-                                                <div>
+                                                <div className="flex justify-end gap-2">
                                                     <Button type="button" variant="primary" onClick={() => setStep1View('select')}>
                                                         Back
+                                                    </Button>
+                                                    <Button type="button" variant="primary" onClick={() => saveCompetition}>
+                                                        Save Competition
                                                     </Button>
                                                 </div>
                                             </div>
