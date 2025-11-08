@@ -215,7 +215,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                     />
                                                 </div>
 
-                                                <div className="flex justify-end gap-2 pb-1">
+                                                <div className="mt-2 max-h-32 overflow-y-auto rounded-md border border-gray-600 bg-gray-600">
                                                     {sports
                                                         .filter(sport => sport.name.toLowerCase().includes(sportSearchTerm.toLowerCase()))
                                                         .map(sport => (
@@ -226,7 +226,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                                     setNewCompetitionData(n => ({ ...n, sportId: sport.id }));
                                                                 }}
                                                                 className={`w-full text-left px-3 py-2 text-sm transition-colors ${newCompetitionData.sportId === sport.id
-                                                                    ? 'bg-emerald-500 text-white font-semibold'
+                                                                    ? 'bg-[#ea3323] text-white font-semibold'
                                                                     : 'text-gray-200 hover:bg-gray-700'
                                                                     }`}
                                                             >
