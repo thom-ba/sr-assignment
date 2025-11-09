@@ -82,5 +82,13 @@ func main() {
 		competitionRoutes.POST("/create", competitionController.CreateCompetition)
 	}
 
+	venueRoutes := api.Group("/venue")
+	{
+		venueRoutes.GET("/:id", venueController.GetVenueById)
+		venueRoutes.GET("/", venueController.GetAllVenues)
+		venueRoutes.POST("/create", venueController.CreateVenue)
+		venueRoutes.DELETE("/delete/:venueID", venueController.DeleteVenue)
+	}
+
 	r.Run()
 }

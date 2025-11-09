@@ -74,8 +74,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         eventTypeId: eventTypes[0]?.id || 0,
         venueId: venues[0]?.id || 0,
     })
-
-    const [step1View, setStep1View] = useState<'select' | 'addCompetition' | 'addSport' | 'addCategory'>('select');
+    const [step1View, setStep1View] = useState<'select' | 'addCompetition' | 'addSport' | 'addCategory' | 'addVenue'>('select');
 
     const [formData, setFormData] = useState({
         dateTime: '',
@@ -95,6 +94,12 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         year: '',
     });
     const [newCategoryName, setNewCategoryName] = useState('')
+
+    const [newVenueData, setNewVenueDataa] = useState({
+        name: '',
+        city: '',
+        capacity: 0,
+    });
 
     const [categorySearchTerm, setCategorySearchTerm] = useState('');
     const [competitionSearchTerm, setCompetitionSearchTerm] = useState('');
@@ -125,7 +130,21 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         }
     };
 
-    const handleSaveNewVenue = () => { }
+    const handleSaveNewVenue = () => {
+        try {
+            const venueToSave = {
+                name: newVenueData.name,
+                city: newVenueData.city,
+                capacity: newVenueData.capacity,
+            }
+
+            const newVenue = await handleSaveNewVenue();
+            onAddVenue(newVenue);
+            setFormData(prev => ({ ...prev, venueId: newVenue.id }))
+        } catch (error) {
+            console.error("Failed to save new Venue: ", error);
+        }
+    }
 
     const handleSaveNewCompetition = async () => {
         try {
@@ -313,7 +332,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                 default:
                                     return (
                                         <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400 mt-2">
-                                            <div className="flex justify-between items-center pt-4 pb-1">
+                                            <div className="flex justify-between items-center pb-1">
                                                 <label htmlFor="comeptitionId" className="text-sm font-medium text-gray-300">Competition</label>
                                                 <button type="button" onClick={() => setStep1View('addCompetition')} className="flex items-center gap-1 text-sm text-emerald-500">
                                                     <CirclePlus className="w-4 h-4" />
@@ -357,7 +376,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                             <div>
                                 <label htmlFor="eventType" className="text-gray-300 text-sm">Event Type</label>
                                 <select name="eventType" id="eventType" value={formData.eventType} onChange={handleChange}
-                                    className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-600">
+                                    className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-400">
                                     {eventTypes.map(eventType => <option key={eventType.id} value={eventType.id}>{eventType.name}</option>)}
                                 </select>
                             </div>
@@ -366,7 +385,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                 );
             case 2:
                 return (
-                    <div className="bg-gray-600 py-4 px-4 mt-4 rounded-lg border border-gray-400">
+                    <div className="bg-gray-700 py-4 px-4 mt-4 rounded-lg border border-gray-400">
                         <div className="grid grid-cols-2 gap-4 pb-4">
                             <Input id="homeTeam" name="homeTeam" label="Home Team" value={formData.homeTeam} onChange={handleChange} />
                             <Input id="awayTeam" name="awayTeam" label="Away Team" value={formData.awayTeam} onChange={handleChange} />
@@ -376,8 +395,109 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                 );
             case 3:
                 return (
-                    <div>
+                    <div className="space-y-4">
+                        {(() => {
+                            switch (step1View) {
+                                case 'addVenue':
+                                    return (
+                                        <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400 mt-4">
+                                            <h2 className="text-lg font-md text-white pb-2">Create a New Venue</h2>
+                                            <Input
+                                                id="newVenueName"
+                                                name="newVenueName"
+                                                label="Venue Name"
+                                                value={newVenueData.name}
+                                                onChange={(e) => setNewVenueDataa(c => ({ ...c, name: e.target.value }))}
+                                            />
 
+                                            <div className="pt-4">
+                                                <Input
+                                                    id="newVenueCity"
+                                                    name="newVenueCity"
+                                                    label="City"
+                                                    value={newVenueData.city}
+                                                    onChange={(e) => setNewVenueDataa(c => ({ ...c, city: e.target.value }))}
+                                                />
+                                            </div>
+
+                                            <div className="pt-4">
+                                                <Input
+                                                    id="newVenueCapacity"
+                                                    name="newVenueCapacity"
+                                                    label="Capacity"
+                                                    value={newVenueData.capacity}
+                                                    onChange={(e) => setNewVenueDataa(c => ({ ...c, capacity: Number(e.target.value) }))}
+                                                />
+                                            </div>
+
+                                            <div className="flex justify-end gap-2 pt-2">
+                                                <Button
+                                                    type="button"
+                                                    variant="primary"
+                                                    size="small"
+                                                    onClick={() => setStep1View('select')}
+                                                >
+                                                    Back
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    variant="primary"
+                                                    size="small"
+                                                    onClick={handleSaveNewVenue}
+                                                >
+                                                    Save Venue
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    );
+
+                                case 'select':
+                                default:
+                                    return (
+                                        <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400 mt-4">
+                                            <div className="flex justify-between items-center pb-1">
+                                                <label
+                                                    htmlFor="venueId"
+                                                    className="text-sm font-medium text-gray-300"
+                                                >
+                                                    Venue
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setStep1View('addVenue')}
+                                                    className="flex items-center gap-1 text-sm text-emerald-500"
+                                                >
+                                                    <CirclePlus className="w-4 h-4" />
+                                                    New
+                                                </button>
+                                            </div>
+                                            <select
+                                                id="venueId"
+                                                name="venueId"
+                                                value={formData.venueId}
+                                                onChange={handleChange}
+                                                className="w-full bg-gray-700 border border-gray-600 text-gray-100 rounded-md p-2"
+                                            >
+                                                {venues.map((venue) => (
+                                                    <option key={venue.id} value={venue.id}>
+                                                        {venue.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+
+                                            <div className="pt-4">
+                                                <Input
+                                                    id="description"
+                                                    name="description"
+                                                    label="Event Description"
+                                                    value={formData.description}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                            }
+                        })()}
                     </div>
                 );
             default:
