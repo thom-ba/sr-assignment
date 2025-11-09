@@ -393,7 +393,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                             <Input id="homeTeam" name="homeTeam" label="Home Team" value={formData.homeTeam} onChange={handleChange} />
                             <Input id="awayTeam" name="awayTeam" label="Away Team" value={formData.awayTeam} onChange={handleChange} />
                         </div>
-                        <Input id="dateTime" name="dateTime" label="Date and Time" type="datetime-local" value={formData.dateTime} onChange={handleChange}></Input>
+                        <Input id="dateTime" name="dateTime" label="Date and Time" type="datetime-local" value={formData.dateTime} onChange={handleChange} />
                     </div>
                 );
             case 3:
@@ -501,7 +501,38 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                     );
                             }
                         })()}
-                    </div>
+                        <div className="space-y-3 px-2 py-2 text-gray-300 border border-gray-400 bg-gray-700 rounded-md">
+                            <h3 className="text-lg font-semibold text-white">Review Event Details</h3>
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                <h3 className="font-medium text-gray-400">Competition:</h3>
+                                <span>{competitions.find(c => c.id === state.competitionId)?.name || "-"}</span>
+
+                                <h3 className="font-medium text-gray-400">Event Type:</h3>
+                                <span>{eventTypes.find(e => e.id === Number(formData.eventType))?.name || "-"}</span>
+
+                                <h3 className="font-medium text-gray-400">Home Team:</h3>
+                                <span>{formData.homeTeam || "-"}</span>
+
+                                <h3 className="font-medium text-gray-400">Away Team:</h3>
+                                <span>{formData.awayTeam || "-"}</span>
+
+                                <h3 className="font-medium text-gray-400">Venue:</h3>
+                                <span>{venues.find(v => v.id === Number(formData.venueId))?.name || "-"}</span>
+
+                                <h3 className="font-medium text-gray-400">Date & Time:</h3>
+                                <span>{formData.dateTime ? new Date(formData.dateTime).toLocaleString() : "-"}</span>
+
+                                <h3 className="font-medium text-gray-400">Event Name:</h3>
+                                <span>
+                                    {`${formData.homeTeam || "Team A"} vs ${formData.awayTeam || "Team B"}`}
+                                </span>
+
+                                <h3 className="font-medium text-gray-400">Description:</h3>
+                                <span>{formData.description || "-"}</span>
+                            </div>
+                        </div>
+
+                    </div >
                 );
             default:
                 return null;
