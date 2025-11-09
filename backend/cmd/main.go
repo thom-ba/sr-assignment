@@ -43,6 +43,10 @@ func main() {
 	competitionService := services.NewCompetitionSerivce(competitionRepo)
 	competitionController := controllers.NewCompetitionController(competitionService)
 
+	venueRepo := repositories.NewVenueRepo(database.GetDB())
+	venueService := services.NewVenueService(venueRepo)
+	venueController := controllers.NewVenueController(venueService)
+
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
@@ -87,7 +91,7 @@ func main() {
 		venueRoutes.GET("/:id", venueController.GetVenueById)
 		venueRoutes.GET("/", venueController.GetAllVenues)
 		venueRoutes.POST("/create", venueController.CreateVenue)
-		venueRoutes.DELETE("/delete/:venueID", venueController.DeleteVenue)
+		//TODO venueRoutes.DELETE("/delete/:venueID", venueController.DeleteVenue)
 	}
 
 	r.Run()

@@ -8,6 +8,7 @@ import { saveSport } from "../services/sportService";
 import { EventType } from "../types";
 import { saveCompetition } from "../services/competitionService";
 import { saveCategory } from "../services/categoryService";
+import { saveVenue } from "../services/venueService";
 
 interface AddEventModalProps {
     onClose: () => void;
@@ -16,13 +17,13 @@ interface AddEventModalProps {
     onAddCompetition: (newCompetition: Competition) => void;
     onAddCategory: (newCategory: Category) => void;
     onAddEventType: (newEventType: EventType) => void;
+    onAddVenue: (newVenue: Venue) => void;
     eventTypes: EventType[],
     categories: Category[],
     sports: Sport[];
     venues: Venue[];
     competitions: Competition[];
 }
-
 
 interface FormState {
     step: number;
@@ -67,7 +68,7 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
     }
 };
 
-export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, onAddCategory, onAddCompetition, eventTypes, categories, sports, venues, competitions }) => {
+export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEvent, onAddSport, onAddCategory, onAddCompetition, onAddVenue, eventTypes, categories, sports, venues, competitions }) => {
     const [state, dispatch] = useReducer(formReducer, {
         ...initialState,
         competitionId: competitions[0]?.id || 0,
@@ -130,7 +131,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         }
     };
 
-    const handleSaveNewVenue = () => {
+    const handleSaveNewVenue = async () => {
         try {
             const venueToSave = {
                 name: newVenueData.name,
@@ -138,9 +139,11 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                 capacity: newVenueData.capacity,
             }
 
-            const newVenue = await handleSaveNewVenue();
+            const newVenue = await saveVenue(venueToSave);
             onAddVenue(newVenue);
-            setFormData(prev => ({ ...prev, venueId: newVenue.id }))
+            setFormData(prev => ({ ...prev, venueId: newVenue.id }));
+            setNewVenueDataa({ name: '', city: '', capacity: 0 });
+            setStep1View('select');
         } catch (error) {
             console.error("Failed to save new Venue: ", error);
         }
@@ -161,8 +164,8 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
 
             setFormData(prev => ({ ...prev, competitionId: newCompetition.id }));
 
-            setNewCompetitionData({ name: '', categoryId: 0, sportId: 0, year: '' })
-            setStep1View('select')
+            setNewCompetitionData({ name: '', categoryId: 0, sportId: 0, year: '' });
+            setStep1View('select');
         } catch (error) {
             console.error("Failed to save new Competition:", error);
         }

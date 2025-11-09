@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 
 import { Navbar } from "./components/Navbar";
 import { EventList } from "./components/EventList";
-import { Category, Competition, Event, EventType, Sport } from "./types";
+import { Category, Competition, Event, EventType, Sport, Venue } from "./types";
 import Background from "./components/assets/Background.webp";
 import { AddModalEvent } from "./components/AddEventModal";
 import { getSports } from "./services/sportService";
@@ -14,6 +14,8 @@ function App() {
     const [sports, setSports] = useState<Sport[]>([]);
     const [competitions, setCompetitions] = useState<Competition[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
+    const [venues, setVenues] = useState<Venue[]>([]);
+
 
     useEffect(() => {
         const fetchSports = async () => {
@@ -114,7 +116,11 @@ function App() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleAddEvent = () => { };
+    const handleAddEvent = () => { }
+
+    const handleAddVenue = (newVenue: Venue) => {
+        setVenues((prev) => [...prev, newVenue]);
+    };
 
     const handleAddSportEvent = (newSport: Sport) => {
         setSports((prev) => [...prev, newSport]);
@@ -129,15 +135,6 @@ function App() {
     };
 
     const handleAddEventType = (newEventType: EventType) => { };
-
-    const venues = [
-        {
-            id: 1,
-            name: "Westside Soccer Arena",
-            city: "Vienna",
-            capacity: 0,
-        },
-    ];
 
     const eventTypes = [
         {
@@ -179,6 +176,7 @@ function App() {
                                 onAddCompetition={handleAddCompetition}
                                 onAddCategory={handleAddCategory}
                                 onAddEventType={handleAddEventType}
+                                onAddVenue={handleAddVenue}
                                 eventTypes={eventTypes}
                                 categories={categories}
                                 competitions={competitions}
