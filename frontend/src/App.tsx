@@ -124,7 +124,6 @@ function App() {
         setCompetitions((prev) => [...prev, newCompetition]);
     };
 
-
     const handleAddCategory = (newCategory: Category) => {
         setCategories((prev) => [...prev, newCategory]);
     };

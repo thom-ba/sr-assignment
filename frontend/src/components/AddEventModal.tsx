@@ -87,7 +87,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
         awayTeam: '',
         description: '',
     })
-    const [isAddingNewCompetition, setIsAddingNewCompetition] = useState(false)
+
     const [newCompetitionData, setNewCompetitionData] = useState({
         name: '',
         sportId: 0,
@@ -101,9 +101,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
     const [sportSearchTerm, setSportSearchTerm] = useState('');
 
     const [newSportName, setNewSportName] = useState('')
-
-    const [isAddingNewVenue, setIsAddingNewVenue] = useState(false)
-    const [newVenueName, setNewVenueName] = useState('')
 
     const handleFieldChange = (field: keyof Omit<FormState, 'step'>, value: any) => {
         dispatch({ type: 'SET_FIELD', field, value });
@@ -142,10 +139,10 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
             const newCompetition = await saveCompetition(competitionToSave);
 
             onAddCompetition(newCompetition);
+
             setFormData(prev => ({ ...prev, competitionId: newCompetition.id }));
 
             setNewCompetitionData({ name: '', categoryId: 0, sportId: 0, year: '' })
-            setIsAddingNewCompetition(false);
             setStep1View('select')
         } catch (error) {
             console.error("Failed to save new Competition:", error);
@@ -239,7 +236,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
                                                 </div>
                                                 <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600">
                                                     {categories
-                                                        .filter(category => category.name?.toLowerCase().includes(sportSearchTerm.toLowerCase()))
+                                                        .filter(category => category.name?.toLowerCase().includes(categorySearchTerm.toLowerCase()))
                                                         .map(category => (
                                                             <button
                                                                 key={category.id}
@@ -370,7 +367,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({ onClose, onAddEven
             case 2:
                 return (
                     <div className="bg-gray-600 py-4 px-4 mt-4 rounded-lg border border-gray-400">
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-4 pb-4">
                             <Input id="homeTeam" name="homeTeam" label="Home Team" value={formData.homeTeam} onChange={handleChange} />
                             <Input id="awayTeam" name="awayTeam" label="Away Team" value={formData.awayTeam} onChange={handleChange} />
                         </div>
