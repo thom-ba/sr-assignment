@@ -7,7 +7,7 @@ export const saveEvent = async (event: {
     home_team_id: number;
     away_team_id: number;
     venue_id: number;
-    eventDateTime: string;
+    event_date_time: string;
     name: string;
     description: string;
 }): Promise<AppEvent> => {

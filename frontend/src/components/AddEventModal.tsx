@@ -144,8 +144,10 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
         e.preventDefault();
         const { competitionId, eventTypeId, homeTeamId, awayTeamId, venueId, dateTime, description } = state;
 
+        console.log('Event Type: ', eventTypeId);
+
         const selectedCompetition = competitions.find(c => c.id === competitionId);
-        const selectedEventType = eventTypes.find(et => et.id === eventTypeId);
+        const selectedEventType = eventTypes.find(et => et.id === state.eventTypeId);
         const selectedVenue = venues.find(v => v.id === venueId);
         const homeTeamObj = teams.find(t => t.id === state.homeTeamId);
         const awayTeamObj = teams.find(t => t.id === state.awayTeamId);
@@ -162,6 +164,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
         }
 
         const eventName = `${homeTeamObj.name} vs ${awayTeamObj.name}`;
+        const event_date_time = new Date(dateTime).toISOString();
 
         //TODO checks
         const eventToCreate = {
@@ -170,7 +173,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
             home_team_id: homeTeamObj.id,
             away_team_id: awayTeamObj.id,
             venue_id: selectedVenue.id,
-            eventDateTime: dateTime,
+            event_date_time,
             name: eventName,
             description,
         };
@@ -183,13 +186,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
         } catch (error) {
             console.error("Failed to create event: ", error);
         }
-    };
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSaveNewSport = async () => {
@@ -574,8 +570,11 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
                                             <button
                                                 key={eventType.id}
                                                 type="button"
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    console.log(eventType)
+                                                    console.log("Event Types: ", eventTypes)
                                                     handleFieldChange("eventTypeId", eventType.id)
+                                                }
                                                 }
                                                 className={`w-full text-left px-3 py-2 text-sm transition-colors ${state.eventTypeId === eventType.id
                                                     ? "bg-[#ea3323] text-white font-semibold"

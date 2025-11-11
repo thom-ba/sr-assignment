@@ -107,10 +107,13 @@ function App() {
         const fetchEventTypes = async () => {
             try {
                 const data = await getEventTypes();
-                const parsedEventTypes: EventType[] = data.map((e: any) => ({
-                    id: e.Id,
-                    name: e.Name,
-                }));
+                const parsedEventTypes: EventType[] = data.map((e: any) => {
+                    console.log("Response: ", data)
+                    return {
+                        id: e.ID,
+                        name: e.Name
+                    }
+                });
                 setEventTypes(parsedEventTypes);
             } catch (error) {
                 console.error("Error retreiving event types: ", error);
