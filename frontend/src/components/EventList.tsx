@@ -1,9 +1,9 @@
 import React from "react";
-import { Event } from "../types";
+import { AppEvent } from "../types";
 import { Clock1, LocationEditIcon, MapPin } from "lucide-react";
 
 interface EventListItemProps {
-    event: Event;
+    event: AppEvent;
 }
 
 const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
@@ -23,7 +23,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
     return (
         <div className="items-center rounded-lg">
             <div className="p-4 flex justify-between items-center bg-[#ea3323] rounded-t-lg">
-                <h2 className="text-white font-semibold">{event.sport}</h2>
+                <h2 className="text-white font-semibold">{ event.competition.name || 'Unknown Competition'}</h2>
                 <div className="bg-black/50 text-white px-2 py-1 rounded-full">
                     {date}
                 </div>
@@ -33,9 +33,9 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
                 <div className="p-6">
                     <div className="flex flex-col items-center text-center mb-4">
                         <div className="flex items-center justify-center gap-4 w-full text-white">
-                            <span className="text-2xl font-bold">{event.homeTeam}</span>
+                            <span className="text-2xl font-bold">{event.homeTeam.name}</span>
                             <span className="text-gray-400">vs</span>
-                            <span className="text-2xl font-bold">{event.awayTeam}</span>
+                            <span className="text-2xl font-bold">{event.awayTeam.name}</span>
                         </div>
                         {event.description && <p className="text-gray-400 text-sm mt-2">{event.description}</p>}
                     </div>
@@ -48,7 +48,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
                     </div>
                     <div className="flex items-center gap-2 text-right">
                         <MapPin className="w-5 h-5" />
-                        <span>{event.venue}</span>
+                        <span>{event.venue.name}</span>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
 };
 
 interface EventListProps {
-    events: Event[];
+    events: AppEvent[];
 }
 
 export const EventList: React.FC<EventListProps> = ({ events }) => {

@@ -1,11 +1,13 @@
-export interface Event {
+export interface AppEvent {
     id: number;
+    competition: Competition;
+    eventType: EventType;
+    venue: Venue;
+    homeTeam: Team;
+    awayTeam: Team;
     dateTime: string;
-    sport: string;
-    venue: string;
-    homeTeam: string;
-    awayTeam: string;
     description?: string;
+    name: string;
 }
 
 export interface Venue {
@@ -36,4 +38,10 @@ export interface Competition {
     category_id?: number;
     name: string;
     year: string;
+}
+
+export interface Team {
+    id: number,
+    name: string,
+    countryCode: string,
 }
