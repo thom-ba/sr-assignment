@@ -49,7 +49,18 @@ func (controller *CompetitionController) GetAllCompetitions(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, competitions)
+	var resp []responses.CompetitionResponse
+	for _, c := range competitions {
+		resp = append(resp, responses.CompetitionResponse{
+			ID:       c.ID,
+			Name:     c.Name,
+			Year:     c.Year,
+			Sport:    c.Sport,
+			Category: c.Category,
+		})
+	}
+
+	ctx.JSON(http.StatusOK, resp)
 }
 
 func (controller *CompetitionController) GetTeamsByCompetition(ctx *gin.Context) {
@@ -83,12 +94,17 @@ func (controller *CompetitionController) CreateCompetition(ctx *gin.Context) {
 		return
 	}
 
+	competition, err = controller.competitionService.GetCompetitionById(competition.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	resp := responses.CompetitionResponse{
-		ID:         competition.ID,
-		SportID:    competition.SportID,
-		CategoryID: competition.CategoryID,
-		Name:       competition.Name,
-		Year:       competition.Year,
+		ID:       competition.ID,
+		Sport:    competition.Sport,
+		Category: competition.Category,
+		Name:     competition.Name,
+		Year:     competition.Year,
 	}
 
 	ctx.JSON(http.StatusOK, resp)

@@ -3,10 +3,10 @@ package models
 import "time"
 
 type Event struct {
-	ID            uint `gorm:"primaryKey;autoIncrement"`
-	CompetitionID uint `gorm:"not null"`
-	Competition   Competition
-	EventTypeID   uint `gorm:"not null"`
+	ID            uint        `gorm:"primaryKey;autoIncrement"`
+	CompetitionID uint        `gorm:"not null"`
+	Competition   Competition `gorm:"foreignKey:CompetitionID"`
+	EventTypeID   uint        `gorm:"not null"`
 	EventType     EventType
 	HomeTeamID    uint `gorm:"not null"`
 	HomeTeam      Team `gorm:"not null;foreignKey:HomeTeamID"`

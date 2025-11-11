@@ -30,6 +30,7 @@ func main() {
 
 	eventRepo := repositories.NewEventRepo(database.GetDB())
 	eventService := services.NewEventService(eventRepo)
+	eventController := controllers.NewEventController(eventService)
 
 	categoryRepo := repositories.NewCategoryRepo(database.GetDB())
 	categoryService := services.NewCategoryService(categoryRepo)
@@ -47,6 +48,10 @@ func main() {
 	venueService := services.NewVenueService(venueRepo)
 	venueController := controllers.NewVenueController(venueService)
 
+	teamRepo := repositories.NewTeamRepo(database.GetDB())
+	teamService := services.NewTeamService(teamRepo)
+	teamController := controllers.NewTeamController(teamService)
+
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
@@ -55,8 +60,6 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
-
-	r.GET("/events/:eventID", controllers.GetEventController(eventService))
 
 	api := r.Group("/api/v1")
 
@@ -92,6 +95,22 @@ func main() {
 		venueRoutes.GET("/", venueController.GetAllVenues)
 		venueRoutes.POST("/create", venueController.CreateVenue)
 		//TODO venueRoutes.DELETE("/delete/:venueID", venueController.DeleteVenue)
+	}
+
+	teamRoutes := api.Group("/team")
+	{
+		teamRoutes.GET("/:teamID", teamController.GetTeamById)
+		teamRoutes.GET("/", teamController.GetAllTeams)
+		teamRoutes.POST("/create", teamController.CreateTeam)
+		teamRoutes.PATCH("/update", teamController.UpdateTeam)
+		teamRoutes.DELETE("/delete/:teamID", teamController.DeleteTeam)
+	}
+
+	eventRoutes := api.Group("/event")
+	{
+		eventRoutes.GET("/:eventID", eventController.GetEventByID)
+		eventRoutes.GET("/", eventController.GetAllEvents)
+		eventRoutes.POST("/create", eventController.CreateEvent)
 	}
 
 	r.Run()

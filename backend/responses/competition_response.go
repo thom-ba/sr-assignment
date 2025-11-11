@@ -1,9 +1,11 @@
 package responses
 
+import "backend/models"
+
 type CompetitionResponse struct {
-	ID         uint   `json:"id"`
-	SportID    uint   `json:"sport_id"`
-	CategoryID uint   `json:"category_id"`
-	Name       string `json:"competiton_name"`
-	Year       uint   `json:"year"`
+	ID       uint            `json:"id"`
+	Name     string          `json:"competiton_name"`
+	Year     uint            `json:"year"`
+	Sport    models.Sport    `json:"sport"`
+	Category models.Category `json:"category"`
 }

@@ -37,7 +37,7 @@ func (c *CompetitionRepoImpl) GetById(id uint) (*models.Competition, error) {
 func (c *CompetitionRepoImpl) GetAllCompetitions() ([]*models.Competition, error) {
 	var competitions []*models.Competition
 
-	if err := c.db.Find(&competitions).Error; err != nil {
+	if err := c.db.Preload("Sport").Preload("Category").Find(&competitions).Error; err != nil {
 		return nil, err
 	}
 
