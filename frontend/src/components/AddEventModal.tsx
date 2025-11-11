@@ -31,8 +31,8 @@ interface FormState {
     step: number;
     competitionId: number;
     eventTypeId: number;
-    homeTeam: string;
-    awayTeam: string;
+    homeTeamId: number;
+    awayTeamId: number;
     dateTime: string;
     venueId: number;
     description: string;
@@ -48,8 +48,8 @@ const initialState: FormState = {
     step: 1,
     competitionId: 0,
     eventTypeId: 0,
-    homeTeam: "",
-    awayTeam: "",
+    homeTeamId: 0,
+    awayTeamId: 0,
     dateTime: "",
     venueId: 0,
     description: "",
@@ -123,8 +123,12 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
     const [competitionSearchTerm, setCompetitionSearchTerm] = useState("");
     const [sportSearchTerm, setSportSearchTerm] = useState("");
     const [eventTypeSearchTerm, setEventTypeSearchTerm] = useState("");
+    const [homeTeamSearchTerm, setHomeTeamSearchTerm] = useState("");
+    const [awayTeamSearchTerm, setAwayTeamSearchTerm] = useState("");
+    const [venueSearchTerm, setVenueSearchTerm] = useState("");
 
     const [newSportName, setNewSportName] = useState("");
+    console.log(":Teams: ", teams);
 
     const selectedCompetition = useMemo(() => competitions.find(c => c.id === state.competitionId), [state.competitionId, competitions]);
     const selectedSport = useMemo(() => sports.find(s => s.id === selectedCompetition?.sport_id), [selectedCompetition, sports]);
@@ -138,19 +142,19 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const { competitionId, eventTypeId, homeTeam, awayTeam, venueId, dateTime, description } = state;
+        const { competitionId, eventTypeId, homeTeamId, awayTeamId, venueId, dateTime, description } = state;
 
         const selectedCompetition = competitions.find(c => c.id === competitionId);
         const selectedEventType = eventTypes.find(et => et.id === eventTypeId);
         const selectedVenue = venues.find(v => v.id === venueId);
-        const homeTeamObj = teams.find(t => t.name === formData.homeTeam);
-        const awayTeamObj = teams.find(t => t.name === formData.awayTeam);
+        const homeTeamObj = teams.find(t => t.id === state.homeTeamId);
+        const awayTeamObj = teams.find(t => t.id === state.awayTeamId);
 
         console.log("Selected Competition: ", selectedCompetition);
         console.log("Selected Event Type: ", selectedEventType);
         console.log("Selected Venue: ", selectedVenue);
         console.log("Selected Home Team: ", homeTeamObj);
-        console.log("Selected Away Team: ", awayTeam);
+        console.log("Selected Away Team: ", awayTeamId);
 
         if (!selectedCompetition || !selectedEventType || !selectedVenue || !homeTeamObj || !awayTeamObj) {
             console.error("Missing required fields to create event");
@@ -245,6 +249,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
             const newCategory = await saveCategory(newCategoryName);
 
             onAddCategory(newCategory);
+            setNewCompetitionData(prev => ({ ...prev, categoryId: newCategory.id }))
             setNewCategoryName("");
             setStep1View("addCompetition");
         } catch (error) {
@@ -589,28 +594,62 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
                 return (
                     <div className="bg-gray-700 py-4 px-4 mt-4 rounded-lg border border-gray-400">
                         <div className="grid grid-cols-2 gap-4 pb-4">
-                            <Input
-                                id="homeTeam"
-                                name="homeTeam"
-                                label="Home Team"
-                                value={formData.homeTeam}
-                                onChange={handleChange}
-                            />
-                            <Input
-                                id="awayTeam"
-                                name="awayTeam"
-                                label="Away Team"
-                                value={formData.awayTeam}
-                                onChange={handleChange}
-                            />
+                            <div>
+                                <label className="text-sm font-medium text-gray-300">Home Team</label>
+                                <Input
+                                    id="homeTeamSearchTerm" type="search"
+                                    value={homeTeamSearchTerm}
+                                    onChange={(e) => setHomeTeamSearchTerm(e.target.value)}
+                                    placeholder="Search Home Team..."
+                                    label=""
+                                />
+                                <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600 rounded-b-md">
+                                    {teams.filter(t => t.id !== state.awayTeamId && t.name.toLowerCase().includes(homeTeamSearchTerm.toLowerCase())).map(team => (
+                                        <button key={team.id}
+                                            type="button"
+                                            onClick={() => handleFieldChange("homeTeamId", team.id)}
+                                            className={`w-full text-left px-3 py-2 text-sm transition-colors ${state.homeTeamId === team.id
+                                                ? "bg-[#ea3323] text-white font-semibold"
+                                                : "text-gray-200 hover:bg-gray-700"
+                                                }`}>
+                                            {team.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="text-sm font-medium text-gray-300">Away Team</label>
+                                <Input
+                                    id="awayTeamSearchTerm" type="search"
+                                    value={awayTeamSearchTerm}
+                                    onChange={(e) => setAwayTeamSearchTerm(e.target.value)}
+                                    placeholder="Search Away Team..."
+                                    label=""
+                                />
+                                <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600 rounded-b-md">
+                                    {teams.filter(t => t.id !== state.homeTeamId && t.name.toLowerCase().includes(awayTeamSearchTerm.toLowerCase())).map(team => (
+                                        <button key={team.id}
+                                            type="button"
+                                            onClick={() => handleFieldChange("awayTeamId", team.id)}
+                                            className={`w-full text-left px-3 py-2 text-sm transition-colors ${state.awayTeamId === team.id
+                                                ? "bg-[#ea3323] text-white font-semibold"
+                                                : "text-gray-200 hover:bg-gray-700"
+                                                }`}>
+                                            {team.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
+
                         <Input
                             id="dateTime"
                             name="dateTime"
                             label="Date and Time"
                             type="datetime-local"
-                            value={formData.dateTime}
-                            onChange={handleChange}
+                            value={state.dateTime}
+                            onChange={(e) => handleFieldChange("dateTime", e.target.value)}
                         />
                     </div>
                 );
@@ -709,27 +748,37 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
                                                     New
                                                 </button>
                                             </div>
-                                            <select
-                                                id="venueId"
-                                                name="venueId"
-                                                value={formData.venueId}
-                                                onChange={handleChange}
-                                                className="w-full bg-gray-700 border border-gray-600 text-gray-100 rounded-md p-2"
-                                            >
-                                                {venues.map((venue) => (
-                                                    <option key={venue.id} value={venue.id}>
+                                            <Input
+                                                id="venueSearchTerm"
+                                                type="search"
+                                                value={venueSearchTerm}
+                                                onChange={(e) => setVenueSearchTerm(e.target.value)}
+                                                placeholder="Search venues..."
+                                                label=""
+                                            />
+
+                                            <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600">
+                                                {venues.filter(v => v.name.toLowerCase().includes(venueSearchTerm.toLowerCase())).map(venue => (
+                                                    <button
+                                                        key={venue.id}
+                                                        type="button"
+                                                        onClick={() => handleFieldChange("venueId", venue.id)}
+                                                        className={`w-full text-left px-3 py-2 text-sm transition-colors ${state.venueId === venue.id
+                                                            ? "bg-[#ea3323] text-white font-semibold"
+                                                            : "text-gray-200 hover:bg-gray-700"
+                                                            }`}>
                                                         {venue.name}
-                                                    </option>
+                                                    </button>
                                                 ))}
-                                            </select>
+                                            </div>
 
                                             <div className="pt-4">
                                                 <Input
                                                     id="description"
                                                     name="description"
                                                     label="Event Description"
-                                                    value={formData.description}
-                                                    onChange={handleChange}
+                                                    value={state.description}
+                                                    onChange={(e) => handleFieldChange('description', e.target.value)}
                                                 />
                                             </div>
                                         </div>
@@ -743,8 +792,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
                             <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                                 <h3 className="font-medium text-gray-400">Competition:</h3>
                                 <span>
-                                    {competitions.find((c) => c.id === state.competitionId)
-                                        ?.name || "-"}
+                                    {competitions.find((c) => c.id === state.competitionId)?.name || "-"}
                                 </span>
 
                                 <h3 className="font-medium text-gray-400">Event Type:</h3>
@@ -753,31 +801,26 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
                                 </span>
 
                                 <h3 className="font-medium text-gray-400">Home Team:</h3>
-                                <span>{formData.homeTeam || "-"}</span>
+                                <span>{teams.find(t => t.id === state.homeTeamId)?.name || "-"}</span>
 
                                 <h3 className="font-medium text-gray-400">Away Team:</h3>
-                                <span>{formData.awayTeam || "-"}</span>
+                                <span>{teams.find(t => t.id === state.awayTeamId)?.name || "-"}</span>
 
                                 <h3 className="font-medium text-gray-400">Venue:</h3>
                                 <span>
-                                    {venues.find((v) => v.id === Number(formData.venueId))
+                                    {venues.find((v) => v.id === Number(state.venueId))
                                         ?.name || "-"}
                                 </span>
 
                                 <h3 className="font-medium text-gray-400">Date & Time:</h3>
                                 <span>
-                                    {formData.dateTime
-                                        ? new Date(formData.dateTime).toLocaleString()
+                                    {state.dateTime
+                                        ? new Date(state.dateTime).toLocaleString()
                                         : "-"}
                                 </span>
 
-                                <h3 className="font-medium text-gray-400">Event Name:</h3>
-                                <span>
-                                    {`${formData.homeTeam || "Team A"} vs ${formData.awayTeam || "Team B"}`}
-                                </span>
-
                                 <h3 className="font-medium text-gray-400">Description:</h3>
-                                <span>{formData.description || "-"}</span>
+                                <span>{state.description || "-"}</span>
                             </div>
                         </div>
                     </div>

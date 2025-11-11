@@ -91,12 +91,12 @@ function App() {
         const fetchTeams = async () => {
             try {
                 const data = await getTeams();
+                console.log(data);
                 const parsedTeams: Team[] = data.map((t: any) => ({
                     id: t.ID,
                     name: t.Name,
                     countryCode: t.CountryCode,
                 }));
-
                 setTeams(parsedTeams);
             } catch (error) {
                 console.error("Error retrieving venues: ", error);
