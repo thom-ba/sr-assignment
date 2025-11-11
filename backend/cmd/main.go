@@ -52,6 +52,10 @@ func main() {
 	teamService := services.NewTeamService(teamRepo)
 	teamController := controllers.NewTeamController(teamService)
 
+	eventTypeRepo := repositories.NewEventTypeRepo(database.GetDB())
+	eventTypeService := services.NewEventTypeService(eventTypeRepo)
+	eventTypeController := controllers.NewEventTypeController(eventTypeService)
+
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
@@ -104,6 +108,15 @@ func main() {
 		teamRoutes.POST("/create", teamController.CreateTeam)
 		teamRoutes.PATCH("/update", teamController.UpdateTeam)
 		teamRoutes.DELETE("/delete/:teamID", teamController.DeleteTeam)
+	}
+
+	eventTypeRoutes := api.Group("/event-type")
+	{
+		eventTypeRoutes.GET("/:eventTypeId", eventTypeController.GetEventTypeById)
+		eventTypeRoutes.GET("/", eventTypeController.GetAllEventTypes)
+		eventTypeRoutes.POST("/create", eventTypeController.CreateEventType)
+		eventTypeRoutes.PATCH("/update", eventTypeController.UpdateEventType)
+		eventTypeRoutes.DELETE("/delete/:eventTypeId", eventTypeController.DeleteEventType)
 	}
 
 	eventRoutes := api.Group("/event")

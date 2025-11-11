@@ -12,6 +12,7 @@ import { getCategories } from "./services/categoryService";
 import { getVenues } from "./services/venueService";
 import { getTeams } from "./services/teamService";
 import { getEvents } from "./services/eventService";
+import { getEventTypes } from "./services/eventTypesService";
 
 function App() {
     const [sports, setSports] = useState<Sport[]>([]);
@@ -20,6 +21,7 @@ function App() {
     const [venues, setVenues] = useState<Venue[]>([]);
     const [teams, setTeams] = useState<Team[]>([]);
     const [events, setEvents] = useState<AppEvent[]>([]);
+    const [eventTypes, setEventTypes] = useState<EventType[]>([]);
 
     useEffect(() => {
         const fetchSports = async () => {
@@ -40,7 +42,6 @@ function App() {
             try {
                 const data = await getCompetitions();
                 const parsedCompetitions: Competition[] = data.map((c: any) => {
-                    console.log(c)
                     return (
                         {
                             id: c.id,
@@ -103,13 +104,24 @@ function App() {
         };
         fetchTeams();
 
-
+        const fetchEventTypes = async () => {
+            try {
+                const data = await getEventTypes();
+                const parsedEventTypes: EventType[] = data.map((e: any) => ({
+                    id: e.Id,
+                    name: e.Name,
+                }));
+                setEventTypes(parsedEventTypes);
+            } catch (error) {
+                console.error("Error retreiving event types: ", error);
+            }
+        }
+        fetchEventTypes();
 
         const fetchEvents = async () => {
             try {
                 const data = await getEvents();
                 const parsedEvents: AppEvent[] = data.map((e: any) => {
-                    console.log(e.competition.Name)
                     return {
                         id: e.id,
                         competition: {
@@ -170,15 +182,6 @@ function App() {
 
     const handleAddEventType = (newEventType: EventType) => { };
 
-    const eventTypes = [
-        {
-            id: 1,
-            name: "WM",
-        },
-    ];
-
-    console.log("Competitions in App.tsx: ", competitions);
-
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar />
@@ -204,7 +207,7 @@ function App() {
                             <EventList events={events} />
                         </div>
 
-                        {isModalOpen && competitions.length > 0 && venues.length > 0 && eventTypes.length > 0 && (
+                        {isModalOpen && (
                             <AddModalEvent
                                 onClose={() => setIsModalOpen(false)}
                                 onAddEvent={handleAddEvent}
