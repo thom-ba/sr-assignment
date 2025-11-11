@@ -39,12 +39,16 @@ function App() {
         const fetchCompetitions = async () => {
             try {
                 const data = await getCompetitions();
-                const parsedCompetitions: Competition[] = data.map((c: any) => ({
-                    id: c.ID,
-                    name: c.Name,
-                    sport_id: c.SportId,
-                    year: c.Year,
-                }));
+                const parsedCompetitions: Competition[] = data.map((c: any) => {
+                    console.log(c)
+                    return (
+                        {
+                            id: c.id,
+                            name: c.competition_name,
+                            sport_id: c.sport.ID,
+                            year: c.year,
+                        })
+                });
                 setCompetitions(parsedCompetitions);
             } catch (error) {
                 console.error("Error retrieving competitions: ", error);
@@ -99,6 +103,8 @@ function App() {
         };
         fetchTeams();
 
+
+
         const fetchEvents = async () => {
             try {
                 const data = await getEvents();
@@ -122,7 +128,7 @@ function App() {
                         },
                         eventType: { id: e.eventType.ID, name: e.eventType.Name },
                         venue: { id: e.venue.ID, name: e.venue.Name, city: e.venue.City, capacity: e.venue.Capacity },
-                        homeTeam: { id: e.homeTeam.ID, name: e.homeTeam.Name, countryCode: e.homeTeam.CountryCode},
+                        homeTeam: { id: e.homeTeam.ID, name: e.homeTeam.Name, countryCode: e.homeTeam.CountryCode },
                         awayTeam: { id: e.awayTeam.ID, name: e.awayTeam.Name, countryCode: e.awayTeam.CountryCode },
                         dateTime: e.eventDateTime,
                         description: e.description,
@@ -171,6 +177,8 @@ function App() {
         },
     ];
 
+    console.log("Competitions in App.tsx: ", competitions);
+
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar />
@@ -196,7 +204,7 @@ function App() {
                             <EventList events={events} />
                         </div>
 
-                        {isModalOpen && (
+                        {isModalOpen && competitions.length > 0 && venues.length > 0 && eventTypes.length > 0 && (
                             <AddModalEvent
                                 onClose={() => setIsModalOpen(false)}
                                 onAddEvent={handleAddEvent}

@@ -4,7 +4,7 @@ import "backend/models"
 
 type CompetitionResponse struct {
 	ID       uint            `json:"id"`
-	Name     string          `json:"competiton_name"`
+	Name     string          `json:"competition_name"`
 	Year     uint            `json:"year"`
 	Sport    models.Sport    `json:"sport"`
 	Category models.Category `json:"category"`

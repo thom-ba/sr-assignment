@@ -94,6 +94,8 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
         "select" | "addCompetition" | "addSport" | "addCategory" | "addVenue"
     >("select");
 
+    console.log(competitions);
+
     const [formData, setFormData] = useState({
         dateTime: "",
         sportId: sports[0]?.id || 0,
@@ -172,7 +174,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
         } catch (error) {
             console.error("Failed to create event: ", error);
         }
-
     };
 
     const handleChange = (
@@ -245,8 +246,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
             console.error("Failed to save new Category: ", error);
         }
     };
-
-    console.log(sports);
 
     const renderStepContent = () => {
         switch (state.step) {
