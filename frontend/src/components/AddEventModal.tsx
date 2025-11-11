@@ -94,8 +94,6 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
         "select" | "addCompetition" | "addSport" | "addCategory" | "addVenue"
     >("select");
 
-    console.log(competitions);
-
     const [formData, setFormData] = useState({
         dateTime: "",
         sportId: sports[0]?.id || 0,
@@ -124,6 +122,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
     const [categorySearchTerm, setCategorySearchTerm] = useState("");
     const [competitionSearchTerm, setCompetitionSearchTerm] = useState("");
     const [sportSearchTerm, setSportSearchTerm] = useState("");
+    const [eventTypeSearchTerm, setEventTypeSearchTerm] = useState("");
 
     const [newSportName, setNewSportName] = useState("");
 
@@ -146,6 +145,12 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
         const selectedVenue = venues.find(v => v.id === venueId);
         const homeTeamObj = teams.find(t => t.name === formData.homeTeam);
         const awayTeamObj = teams.find(t => t.name === formData.awayTeam);
+
+        console.log("Selected Competition: ", selectedCompetition);
+        console.log("Selected Event Type: ", selectedEventType);
+        console.log("Selected Venue: ", selectedVenue);
+        console.log("Selected Home Team: ", homeTeamObj);
+        console.log("Selected Away Team: ", awayTeam);
 
         if (!selectedCompetition || !selectedEventType || !selectedVenue || !homeTeamObj || !awayTeamObj) {
             console.error("Missing required fields to create event");
@@ -541,23 +546,41 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
                             }
                         })()}
                         {step1View === "select" && (
-                            <div>
-                                <label htmlFor="eventType" className="text-gray-300 text-sm">
+                            <div className="bg-gray-700 px-4 py-4 rounded-lg border border-gray-400 mt-2">
+                                <label htmlFor="eventTypeId"
+                                    className="text-sm font-medium text-gray-300"
+                                >
                                     Event Type
                                 </label>
-                                <select
-                                    name="eventType"
-                                    id="eventType"
-                                    value={formData.eventType}
-                                    onChange={handleChange}
-                                    className="w-full bg-gray-700 py-2 px-2 rounded-md border border-gray-400"
-                                >
-                                    {eventTypes.map((eventType) => (
-                                        <option key={eventType.id} value={eventType.id}>
-                                            {eventType.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div>
+                                    <Input
+                                        id="eventTypeSearch"
+                                        type="search"
+                                        value={eventTypeSearchTerm}
+                                        onChange={(e) => setEventTypeSearchTerm(e.target.value)}
+                                        placeholder="Search Event types..."
+                                        label=""
+                                    />
+                                </div>
+                                <div className="max-h-32 overflow-y-auto border border-gray-600 bg-gray-600">
+                                    {eventTypes
+                                        .filter((eventType) => eventType.name?.toLowerCase().includes(eventTypeSearchTerm.toLowerCase()),
+                                        ).map((eventType) => (
+                                            <button
+                                                key={eventType.id}
+                                                type="button"
+                                                onClick={() =>
+                                                    handleFieldChange("eventTypeId", eventType.id)
+                                                }
+                                                className={`w-full text-left px-3 py-2 text-sm transition-colors ${state.eventTypeId === eventType.id
+                                                    ? "bg-[#ea3323] text-white font-semibold"
+                                                    : "text-gray-200 hover:bg-gray-700"
+                                                    }`}
+                                            >
+                                                {eventType.name}
+                                            </button>
+                                        ))}
+                                </div>
                             </div>
                         )}
                     </div>
@@ -726,8 +749,7 @@ export const AddModalEvent: React.FC<AddEventModalProps> = ({
 
                                 <h3 className="font-medium text-gray-400">Event Type:</h3>
                                 <span>
-                                    {eventTypes.find((e) => e.id === Number(formData.eventType))
-                                        ?.name || "-"}
+                                    {eventTypes.find((e) => e.id === state.eventTypeId)?.name || "-"}
                                 </span>
 
                                 <h3 className="font-medium text-gray-400">Home Team:</h3>
