@@ -33,3 +33,16 @@ export const getEvents = async (): Promise<AppEvent[]> => {
         throw error;
     }
 }
+
+export const deleteEvent = async(eventId: number) => {
+    console.log("Trying to delete event.");
+
+    try {
+        const response = await api.delete(`event/delete/${eventId}`)
+        console.log(response)
+        return response.data
+    } catch(error) {
+        console.error("Error deleting event: ", error);
+        throw error;
+    }
+}

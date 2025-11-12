@@ -11,7 +11,7 @@ import { getCompetitions } from "./services/competitionService";
 import { getCategories } from "./services/categoryService";
 import { getVenues } from "./services/venueService";
 import { getTeams } from "./services/teamService";
-import { getEvents } from "./services/eventService";
+import { deleteEvent, getEvents } from "./services/eventService";
 import { getEventTypes } from "./services/eventTypesService";
 
 function App() {
@@ -151,7 +151,6 @@ function App() {
                     }
                 });
 
-
                 setEvents(parsedEvents);
             } catch (error) {
                 console.error("Error retrieving events: ", error);
@@ -185,6 +184,15 @@ function App() {
 
     const handleAddEventType = (newEventType: EventType) => { };
 
+    const handleDeleteEvent = async (event: AppEvent) => {
+        try {
+            const result = await deleteEvent(event.id);
+            setEvents((prevEvents) => prevEvents.filter((e) => e.id !== event.id));
+        } catch (error) {
+            console.error("Error deleting event: ", error);
+        }
+    }
+
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar />
@@ -207,7 +215,9 @@ function App() {
                             </button>
                         </div>
                         <div className="pt-5">
-                            <EventList events={events} />
+                            <EventList events={events}
+                                onDelete={handleDeleteEvent}
+                            />
                         </div>
 
                         {isModalOpen && (
