@@ -45,14 +45,14 @@ func Run(db *gorm.DB) error {
 			('Field Delta', 'Paris', 45000),
 			('Ground Echo', 'Rome', 40000);`,
 
-		`INSERT INTO competitions (sport_id, category_id, name, year) VALUES
+		`INSERT INTO competitions (sport_id_foreignkey, category_id_foreignkey, name, year) VALUES
 			(1, 1, 'Premier Cup', 2024),
 			(2, 1, 'Euro Basket League', 2024),
 			(3, 2, 'World Tennis Masters', 2024),
 			(4, 2, 'Cricket World Challenge', 2024),
 			(5, 1, 'Ice Hockey Championship', 2024);`,
 
-		`INSERT INTO events (competition_id, event_type_id, home_team_id, away_team_id, venue_id, event_date_time, name, description) VALUES
+		`INSERT INTO events (competition_id_foreignkey, event_type_id, home_team_id, away_team_id, venue_id, event_date_time, name, description) VALUES
 			(1, 1, 1, 2, 1, '2024-05-21 18:00:00+00', 'Lions vs Tigers', 'Opening match of Premier Cup'),
 			(1, 2, 3, 4, 2, '2024-06-01 20:00:00+00', 'Wolves vs Eagles', 'Playoff round match'),
 			(2, 1, 2, 5, 2, '2024-06-10 19:00:00+00', 'Tigers vs Panthers', 'Group stage game'),

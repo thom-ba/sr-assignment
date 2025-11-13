@@ -11,6 +11,7 @@ import (
 func main() {
 	db := database.GetDB()
 
+	db.Migrator().DropTable(&models.Event{}, &models.Competition{}, &models.Category{}, &models.Sport{}, &models.EventType{}, &models.Team{}, &models.Venue{})
 	err := db.AutoMigrate(
 		&models.Category{},
 		&models.Sport{},
