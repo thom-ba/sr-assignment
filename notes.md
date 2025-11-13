@@ -17,8 +17,8 @@ Problems I ran into:
 - As I use Java or CPP normally, I often mixed up the naming conventions, which caused me to go back and change a lot of names afterwards
 - I had a problem with the postgre port already taken, but as I ran into this problem a lot of times already I knew how to fix it
 - The Modal I was using almost till the end got too big at the end. E.g.: adding a sport because it doesnt exist, causes the modal to EXPLODE in size and it would
-be just too much at once. My friend is a frontend developer so I asked him what he would do and he told me to use useReducer from React. He also helped me at the 
-beginning to understand how to implement it.
+  be just too much at once. My friend is a frontend developer so I asked him what he would do and he told me to use useReducer from React. He also helped me at the 
+  beginning to understand how to implement it.
 - I overthinked some problems at the beginning which were easy to solve later, so I wasted some time on trying to have a perfect solution for too long
 
 AI Usage:
@@ -32,6 +32,7 @@ AI Usage:
 - To make a basic design of the frontend, so I can get ideas on how to make what look
 - To debug styling issues
 - To generate mock data
+- To help me make it one command deploy app using docker compose (mainly because of some silly errors..)
 
 # Why I use what tech:
 Frontend:

@@ -21,8 +21,8 @@ func GetDB() *gorm.DB {
 	once.Do(func() {
 		connectionString := fmt.Sprintf(
 			"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-			"127.0.0.1",
-			"3295",
+			os.Getenv("DB_HOST"),
+			os.Getenv("DB_PORT"),
 			os.Getenv("DB_USER"),
 			os.Getenv("DB_PASSWORD"),
 			os.Getenv("DB_NAME"),
