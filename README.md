@@ -43,11 +43,11 @@ Go into the dbdiagram_design.txt and copy paste it into https://dbdiagram.io/d/6
 If the link still works, no need to copy paste.
 
 ### Resources
-https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
-https://gorm.io/docs/
-https://blog.stackademic.com/golang-crud-rest-api-with-gin-and-gorm-service-repository-pattern-167afa8e9e87
-https://react.dev/reference/react/useReducer
-https://react.dev/reference/react/useReducer
+- https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
+- https://gorm.io/docs/
+- https://blog.stackademic.com/golang-crud-rest-api-with-gin-and-gorm-service-repository-pattern-167afa8e9e87
+- https://react.dev/reference/react/useReducer
+- https://react.dev/reference/react/useReducer
 
 ### What waisted the most time
 - The modal I was using almost till the end got too big. Adding a new sport would cause
