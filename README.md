@@ -38,6 +38,9 @@ docker compose up --build
 ### Accessing the App
  - Frontend: http://localhost:3000
 
+### To get a view of the Database Schema:
+Go into the dbdiagram_design.txt and copy paste it into https://dbdiagram.io/d/69050eff6735e11170b753ff if the link doesnt work anymore. 
+If the link still works, no need to copy paste.
 
 ### Resources
 https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
