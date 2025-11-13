@@ -32,7 +32,7 @@ Key features:
 
 ### Run the Application
 ```bash
-    docker compose up --build
+docker compose up --build
 ```
 
 ### Accessing the App
