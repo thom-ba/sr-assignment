@@ -1,74 +1,80 @@
 version: "3.9"
 
 services:
-  db:
-    image: postgres:17
-    container_name: assignment-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: sport
-      POSTGRES_PASSWORD: radar
-      POSTGRES_DB: sportradar
-    ports:
-      - "3295:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    networks:
-      - assignment-network
+    db:
+        image: postgres:17
+        container_name: assignment-db
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: sport
+            POSTGRES_PASSWORD: radar
+            POSTGRES_DB: sportradar
+        ports:
+            - "3295:5432"
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        networks:
+            - assignment-network
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U sport -d sportradar" ]
+            interval: "2s"
+            timeout: "2s"
+            retries: 10
 
-  migrate:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.migrate
-    container_name: assignment-migrate
-    depends_on:
-      - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: sport
-      DB_PASSWORD: radar
-      DB_NAME: sportradar
-    networks:
-      - assignment-network
-    restart: "no"
+    migrate:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile.migrate
+        container_name: assignment-migrate
+        depends_on:
+            db:
+                condition: service_healthy
+        environment:
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_USER: sport
+            DB_PASSWORD: radar
+            DB_NAME: sportradar
+        networks:
+            - assignment-network
+        restart: "no"
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.api
-    container_name: assignment-backend
-    depends_on:
-      - db
-      - migrate
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: sport
-      DB_PASSWORD: radar
-      DB_NAME: sportradar
-    ports:
-      - "8080:8080"
-    networks:
-      - assignment-network
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile.api
+        container_name: assignment-backend
+        depends_on:
+            - db
+            - migrate
+        environment:
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_USER: sport
+            DB_PASSWORD: radar
+            DB_NAME: sportradar
+        ports:
+            - "8080:8080"
+        networks:
+            - assignment-network
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.frontend
-    container_name: assignment-frontend
-    depends_on:
-      - backend
-    ports:
-      - "3000:80"
-    environment:
-      NODE_ENV: "development"
-    networks:
-      - assignment-network
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile.frontend
+        container_name: assignment-frontend
+        depends_on:
+            - backend
+        ports:
+            - "3000:80"
+        environment:
+            NODE_ENV: "development"
+        networks:
+            - assignment-network
 
 networks:
-  assignment-network:
-    driver: bridge
+    assignment-network:
+        driver: bridge
 
 volumes:
-  db_data:
+    db_data:
