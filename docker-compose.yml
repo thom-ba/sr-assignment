@@ -3,14 +3,72 @@ version: "3.9"
 services:
   db:
     image: postgres:17
-    container_name: assignment
+    container_name: assignment-db
     restart: unless-stopped
-
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: sport
+      POSTGRES_PASSWORD: radar
+      POSTGRES_DB: sportradar
     ports:
       - "3295:5432"
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - assignment-network
+
+  migrate:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.migrate
+    container_name: assignment-migrate
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: sport
+      DB_PASSWORD: radar
+      DB_NAME: sportradar
+    networks:
+      - assignment-network
+    restart: "no"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.api
+    container_name: assignment-backend
+    depends_on:
+      - db
+      - migrate
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: sport
+      DB_PASSWORD: radar
+      DB_NAME: sportradar
+    ports:
+      - "8080:8080"
+    networks:
+      - assignment-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: assignment-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    environment:
+      NODE_ENV: "development"
+    networks:
+      - assignment-network
+
+networks:
+  assignment-network:
+    driver: bridge
+
+volumes:
+  db_data:
