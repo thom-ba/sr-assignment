@@ -4,10 +4,12 @@ import (
 	"backend/models"
 	"backend/repositories"
 	"backend/requests"
+	"strconv"
 )
 
 type CompetitionService interface {
 	GetCompetitionById(id uint) (*models.Competition, error)
+	GetAllCompetitions() ([]*models.Competition, error)
 	Insert(createCompetitionRequest requests.CreateCompetitionRequest) (*models.Competition, error)
 	Update(newCompetitionRequest requests.UpdateCompetitionRequest) (*models.Competition, error)
 }
@@ -31,12 +33,37 @@ func (c *CompetitionServiceImpl) GetCompetitionById(id uint) (*models.Competitio
 	return competition, nil
 }
 
+func (c *CompetitionServiceImpl) GetAllCompetitions() ([]*models.Competition, error) {
+	competitions, err := c.competitionRepo.GetAllCompetitions()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return competitions, nil
+}
+
+func (c *CompetitionServiceImpl) GetTeamsByCompetition(id uint) ([]*models.Team, error) {
+	teams, err := c.competitionRepo.GetTeamsByCompetition(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return teams, nil
+}
+
 func (c *CompetitionServiceImpl) Insert(createCompetitionRequest requests.CreateCompetitionRequest) (*models.Competition, error) {
+	year, err := strconv.ParseUint(createCompetitionRequest.Year, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	yearuint := uint(year)
+
 	competition := &models.Competition{
 		SportID:    createCompetitionRequest.SportID,
 		CategoryID: createCompetitionRequest.CategoryID,
 		Name:       createCompetitionRequest.Name,
-		Year:       createCompetitionRequest.Year,
+		Year:       yearuint,
 	}
 
 	comp, err := c.competitionRepo.Insert(competition)

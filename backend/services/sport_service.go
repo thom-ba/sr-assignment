@@ -8,6 +8,7 @@ import (
 
 type SportService interface {
 	GetSportById(id uint) (*models.Sport, error)
+	GetAllSport() ([]*models.Sport, error)
 	Insert(createSportRequest requests.CreateSportRequest) (*models.Sport, error)
 	Update(newSportRequest requests.UpdateSportRequest) (*models.Sport, error)
 	Delete(id uint) error
@@ -30,6 +31,15 @@ func (s *SportServiceImpl) GetSportById(id uint) (*models.Sport, error) {
 	}
 
 	return sport, nil
+}
+
+func (s *SportServiceImpl) GetAllSport() ([]*models.Sport, error) {
+	sports, err := s.sportRepo.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return sports, nil
 }
 
 func (s *SportServiceImpl) Insert(createSportRequest requests.CreateSportRequest) (*models.Sport, error) {

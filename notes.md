@@ -17,6 +17,9 @@ Problems I ran into:
 - Was wondering why my React.FC wasn't working until I noticed that I didnt generate the project with TypeScript
 - As I use Java or CPP normally, I often mixed up the naming conventions, which caused me to go back and change a lot of names afterwards
 - I had a problem with the postgre port already taken, but as I ran into this problem a lot of times already I knew how to fix it
+- The Modal I was using almost till the end got too big at the end. E.g.: adding a sport because it doesnt exist, causes the modal to EXPLODE in size and it would
+  be just too much at once. My friend is a frontend developer so I asked him what he would do and he told me to use useReducer from React. He also helped me at the
+  beginning to understand how to implement it.
 
 AI Usage:
 
@@ -29,6 +32,7 @@ AI Usage:
 - Used AI to make a basic design of the frontend, so I can get ideas on how to make what look
 - Used AI to debug styling issues
 - Used AI to generate mock data
+- Used AI to help me make it one command deploy app using docker compose (mainly because of some silly errors..)
 
 Why I use what tech:
 Frontend:
@@ -51,3 +55,5 @@ Backend:
 https://cristiancurteanu.com/understanding-go-sync-once/?utm_source=chatgpt.com
 https://gorm.io/docs/
 https://blog.stackademic.com/golang-crud-rest-api-with-gin-and-gorm-service-repository-pattern-167afa8e9e87
+https://react.dev/reference/react/useReducer
+https://react.dev/reference/react/useReducer

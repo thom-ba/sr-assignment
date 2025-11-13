@@ -6,37 +6,14 @@ import (
 	"backend/repositories"
 	"backend/services"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// r := gin.Default()
-
-	// r.GET("/ping", func(ctx *gin.Context) {
-	// 	ctx.JSON(http.StatusOK, gin.H{
-	// 		"message": "pong",
-	// 	})
-	// })
-
-	// r.Run()
-
-	// db := database.GetDB()
-	// err := db.AutoMigrate(
-	// 	&models.Category{},
-	// 	&models.Sport{},
-	// 	&models.EventType{},
-	// 	&models.Team{},
-	// 	&models.Venue{},
-	// 	&models.Competition{},
-	// 	&models.Event{},
-	// )
-	// if err != nil {
-	// 	log.Fatal("Migration failed:", err)
-	// }
-	// log.Println("Database migrated successfully!")
-
 	eventRepo := repositories.NewEventRepo(database.GetDB())
 	eventService := services.NewEventService(eventRepo)
+	eventController := controllers.NewEventController(eventService)
 
 	categoryRepo := repositories.NewCategoryRepo(database.GetDB())
 	categoryService := services.NewCategoryService(categoryRepo)
@@ -46,23 +23,90 @@ func main() {
 	sportService := services.NewSportService(sportRepo)
 	sportController := controllers.NewSportController(sportService)
 
-	r := gin.Default()
-	r.GET("/events/:eventID", controllers.GetEventController(eventService))
+	competitionRepo := repositories.NewCompetitionRepo(database.GetDB())
+	competitionService := services.NewCompetitionSerivce(competitionRepo)
+	competitionController := controllers.NewCompetitionController(competitionService)
 
-	categoryRoutes := r.Group("/categories")
+	venueRepo := repositories.NewVenueRepo(database.GetDB())
+	venueService := services.NewVenueService(venueRepo)
+	venueController := controllers.NewVenueController(venueService)
+
+	teamRepo := repositories.NewTeamRepo(database.GetDB())
+	teamService := services.NewTeamService(teamRepo)
+	teamController := controllers.NewTeamController(teamService)
+
+	eventTypeRepo := repositories.NewEventTypeRepo(database.GetDB())
+	eventTypeService := services.NewEventTypeService(eventTypeRepo)
+	eventTypeController := controllers.NewEventTypeController(eventTypeService)
+
+	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
+	api := r.Group("/api/v1")
+
+	categoryRoutes := api.Group("/categories")
 	{
 		categoryRoutes.GET("/:categoryID", categoryController.GetCategoryById)
+		categoryRoutes.GET("/", categoryController.GetAllCategories)
 		categoryRoutes.POST("/create", categoryController.CreateCategory)
 		categoryRoutes.PATCH("/update", categoryController.UpdateCategory) // We use PATCH as we dont update the WHOLE resource
 		categoryRoutes.DELETE("/delete/:categoryID", categoryController.DeleteCategory)
 	}
 
-	sportRoutes := r.Group("/sports")
+	sportRoutes := api.Group("/sport")
 	{
 		sportRoutes.GET("/:sportID", sportController.GetSportById)
+		sportRoutes.GET("/", sportController.GetAllSport)
 		sportRoutes.POST("/create", sportController.CreateSport)
 		sportRoutes.PATCH("/update", sportController.UpdateSport)
 		sportRoutes.DELETE("/delete/:sportID", sportController.DeleteSport)
+	}
+
+	competitionRoutes := api.Group("/competition")
+	{
+		competitionRoutes.GET("/:id", competitionController.GetCompetitionById)
+		competitionRoutes.GET("/", competitionController.GetAllCompetitions)
+		competitionRoutes.GET("/:id/teams", competitionController.GetTeamsByCompetition)
+		competitionRoutes.POST("/create", competitionController.CreateCompetition)
+	}
+
+	venueRoutes := api.Group("/venue")
+	{
+		venueRoutes.GET("/:id", venueController.GetVenueById)
+		venueRoutes.GET("/", venueController.GetAllVenues)
+		venueRoutes.POST("/create", venueController.CreateVenue)
+		//TODO venueRoutes.DELETE("/delete/:venueID", venueController.DeleteVenue)
+	}
+
+	teamRoutes := api.Group("/team")
+	{
+		teamRoutes.GET("/:teamID", teamController.GetTeamById)
+		teamRoutes.GET("/", teamController.GetAllTeams)
+		teamRoutes.POST("/create", teamController.CreateTeam)
+		teamRoutes.PATCH("/update", teamController.UpdateTeam)
+		teamRoutes.DELETE("/delete/:teamID", teamController.DeleteTeam)
+	}
+
+	eventTypeRoutes := api.Group("/event-type")
+	{
+		eventTypeRoutes.GET("/:eventTypeId", eventTypeController.GetEventTypeById)
+		eventTypeRoutes.GET("/", eventTypeController.GetAllEventTypes)
+		eventTypeRoutes.POST("/create", eventTypeController.CreateEventType)
+		eventTypeRoutes.PATCH("/update", eventTypeController.UpdateEventType)
+		eventTypeRoutes.DELETE("/delete/:eventTypeId", eventTypeController.DeleteEventType)
+	}
+
+	eventRoutes := api.Group("/event")
+	{
+		eventRoutes.GET("/:eventID", eventController.GetEventByID)
+		eventRoutes.GET("/", eventController.GetAllEvents)
+		eventRoutes.POST("/create", eventController.CreateEvent)
 	}
 
 	r.Run()

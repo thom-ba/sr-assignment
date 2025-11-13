@@ -1,0 +1,17 @@
+FROM golang:1.25.4-alpine AS build
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o /db-migrate ./cmd/db_init
+
+FROM gcr.io/distroless/base-debian11
+WORKDIR /
+
+COPY --from=build /db-migrate /db-migrate
+
+ENTRYPOINT [ "/db-migrate" ]
