@@ -34,7 +34,7 @@ func (s *EventServiceImpl) Insert(req requests.CreateEventRequest) (*models.Even
 		EventTypeID:   req.EventTypeID,
 		HomeTeamID:    req.HomeTeamID,
 		AwayTeamID:    req.AwayTeamID,
-		VenueId:       req.VenueID,
+		VenueID:       req.VenueID,
 		EventDateTime: req.EventDateTime,
 		Name:          req.Name,
 		Description:   req.Description,
