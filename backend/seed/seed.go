@@ -52,7 +52,7 @@ func Run(db *gorm.DB) error {
 			(4, 2, 'Cricket World Challenge', 2024),
 			(5, 1, 'Ice Hockey Championship', 2024);`,
 
-		`INSERT INTO events (competition_id_foreignkey, event_type_id, home_team_id, away_team_id, venue_id, event_date_time, name, description) VALUES
+		`INSERT INTO events (competition_id_foreignkey, eventtype_id_foreignkey, hometeam_id_foreignkey, awayteam_id_foreignkey, venue_id_foreignkey, event_date_time, name, description) VALUES
 			(1, 1, 1, 2, 1, '2024-05-21 18:00:00+00', 'Lions vs Tigers', 'Opening match of Premier Cup'),
 			(1, 2, 3, 4, 2, '2024-06-01 20:00:00+00', 'Wolves vs Eagles', 'Playoff round match'),
 			(2, 1, 2, 5, 2, '2024-06-10 19:00:00+00', 'Tigers vs Panthers', 'Group stage game'),
