@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import logo from "./logo.svg";
 
 import { Navbar } from "./components/Navbar";
@@ -13,6 +13,7 @@ import { getVenues } from "./services/venueService";
 import { getTeams } from "./services/teamService";
 import { deleteEvent, getEvents } from "./services/eventService";
 import { getEventTypes } from "./services/eventTypesService";
+import { FilterBar } from "./components/FilterBar";
 
 function App() {
     const [sports, setSports] = useState<Sport[]>([]);
@@ -22,6 +23,7 @@ function App() {
     const [teams, setTeams] = useState<Team[]>([]);
     const [events, setEvents] = useState<AppEvent[]>([]);
     const [eventTypes, setEventTypes] = useState<EventType[]>([]);
+    const [sportFilter, setSportFilter] = useState<string>("all");
 
     useEffect(() => {
         const fetchSports = async () => {
@@ -160,6 +162,15 @@ function App() {
     }, []);
 
 
+    const filteredEvents = useMemo(() => {
+        return events.filter(event => {
+            if (sportFilter === "all") {
+                return true;
+            }
+            return event.competition.sport_id === parseInt(sportFilter);
+        })
+    }, [sportFilter, events]);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleAddEvent = (event: AppEvent) => {
@@ -214,8 +225,17 @@ function App() {
                                 Add Event
                             </button>
                         </div>
+
+                        <div className="py-5">
+                            <FilterBar
+                                sports={sports}
+                                currentSport={sportFilter}
+                                onSportChange={setSportFilter}
+                            />
+                        </div>
+
                         <div className="pt-5">
-                            <EventList events={events}
+                            <EventList events={filteredEvents}
                                 onDelete={handleDeleteEvent}
                             />
                         </div>

@@ -8,7 +8,6 @@
 - Name, Decr.,
 
 Problems I ran into:
-
 - at the start I named the field event.descr which can cause SQL syntax issues
 - After the first design I forgot one crucial thing:
   A icehockey team could be linked to a football game
@@ -20,30 +19,35 @@ Problems I ran into:
 - The Modal I was using almost till the end got too big at the end. E.g.: adding a sport because it doesnt exist, causes the modal to EXPLODE in size and it would
 be just too much at once. My friend is a frontend developer so I asked him what he would do and he told me to use useReducer from React. He also helped me at the 
 beginning to understand how to implement it.
+- I overthinked some problems at the beginning which were easy to solve later, so I wasted some time on trying to have a perfect solution for too long
 
 AI Usage:
 
 - GithubCopilot was DISABLED all the way through the whole project
 - Checked my Schema Design for any obvious errors. Didnt find any but forgot about 3nf in one table
-- Used AI to get resources to learn from
-- Used AI to explain certain functions in go I didnt use yet
-- Used AI to find resources to specific questions instead of searching for them for ages :<
-- Used AI to fix certain errors I didnt understand from the compilor error itself
-- Used AI to make a basic design of the frontend, so I can get ideas on how to make what look
-- Used AI to debug styling issues
-- Used AI to generate mock data
+- To get resources to learn from
+- To explain certain functions in go I didnt use yet
+- To find resources to specific questions instead of searching for them for ages :<
+- To fix certain errors I didnt understand from the compilor error itself
+- To make a basic design of the frontend, so I can get ideas on how to make what look
+- To debug styling issues
+- To generate mock data
 
-Why I use what tech:
+# Why I use what tech:
 Frontend:
 - React, Tailwind, (because I am used to it)
 
 Backend:
+- Go, because it is used in the company 
+- CRUD application: Gin (lightweight and simple to learn) 
+- Database integration: GORM (easy database handling)
+ 
+Also both of these technologies should scale well so implementing search, pagination or filters later on shouldnt be a problem
 
-- Go, because it is used in the company - CRUD application: Gin (lightweight and simple to learn) - Database integration: GORM (easy database handling)
-  Also both of these technologies should scale well so implementing search, pagination or filters later on shouldnt be a problem
+Editor:
+I used either nvim or vscode. 
 
 # Design Patterns I used:
-
 - Dependency injection
 - Singleton
 - I also used a Modal building kind of structure in the frontend which I used before
