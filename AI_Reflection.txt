@@ -1,0 +1,12 @@
+AI Usage:
+- GithubCopilot was DISABLED all the way through the whole project
+- Checked my Schema Design for any errors.
+- Provide resources to learn from
+- To explain certain topics in Go I didnt use yet
+- To fix certain errors I didnt understand from the compilor error itself. To make it clear
+  I didn't copy paste any code in this process.
+- Make a basic design of the frontend, so I can get ideas on how to make what component look
+  like.
+- Help with debugging styling issues.
+- Generate more mock data to make the App more testable
+- To help me make it one command deploy app using docker compose.
