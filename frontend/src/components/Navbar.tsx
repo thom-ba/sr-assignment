@@ -12,7 +12,7 @@ export const Navbar: React.FC = () => {
                     <a href="#" className="text-white text-xl hover:text-[#ea3323] hover:underline underline-offset-2 transition-all">Home</a>
                     <a href="#" className="text-white text-xl hover:text-[#ea3323] transition-colors">Sports</a>
                     <a href="#" className="text-white text-xl hover:text-[#ea3323] transition-colors">Venues</a>
-                    <a href="#" className="text-white text-xl hover:text-[#ea3323] transition-colors">About</a>
+                    <a href="https://twb-digital.at/" className="text-white text-xl hover:text-[#ea3323] transition-colors">About</a>
                 </div>
             </div>
         </nav>
