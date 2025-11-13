@@ -18,8 +18,8 @@ Problems I ran into:
 - As I use Java or CPP normally, I often mixed up the naming conventions, which caused me to go back and change a lot of names afterwards
 - I had a problem with the postgre port already taken, but as I ran into this problem a lot of times already I knew how to fix it
 - The Modal I was using almost till the end got too big at the end. E.g.: adding a sport because it doesnt exist, causes the modal to EXPLODE in size and it would
-be just too much at once. My friend is a frontend developer so I asked him what he would do and he told me to use useReducer from React. He also helped me at the 
-beginning to understand how to implement it.
+  be just too much at once. My friend is a frontend developer so I asked him what he would do and he told me to use useReducer from React. He also helped me at the
+  beginning to understand how to implement it.
 
 AI Usage:
 
@@ -32,9 +32,11 @@ AI Usage:
 - Used AI to make a basic design of the frontend, so I can get ideas on how to make what look
 - Used AI to debug styling issues
 - Used AI to generate mock data
+- Used AI to help me make it one command deploy app using docker compose (mainly because of some silly errors..)
 
 Why I use what tech:
 Frontend:
+
 - React, Tailwind, (because I am used to it)
 
 Backend:
